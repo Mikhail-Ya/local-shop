@@ -1,0 +1,4 @@
+sku,name,slug,description,price,category_slug,stock,attributes
+PAL-HIKER-001,"Палатка ""Hiker""",palatka-hiker,"Лёгкая двухместная палатка...",7490,turizm,2,"{""purpose"":""Отдых"",""brand"":""Hiker"",""weight_kg"":2.5}"
+SPAL-TRAMP-001,"Спальник ""Tramp""",spalnik-tramp,"Комфортный спальник...",4900,turizm,1,"{""purpose"":""Отдых"",""brand"":""Tramp"",""material"":""Полиэстер""}"
+MAN-METAL-001,"Мангал металлический",mangal-metallicheskii,"Разборный мангал...",1200,dacha,3,"{""purpose"":""Дача"",""brand"":""Огонёк"",""material"":""Нержавейка""}"

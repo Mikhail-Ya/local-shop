@@ -22,7 +22,14 @@ async function main() {
     ],
     skipDuplicates: true,
   });
-
+  await prisma.category.createMany({
+     data:[
+      { name: 'Туризм', slug: 'turizm', description: 'Товары для отдыха на природе' },
+    { name: 'Дача', slug: 'dacha', description: 'Всё для дачи и сада' },
+    { name: 'Дом', slug: 'dom', description: 'Товары для дома' },
+    ],
+    skipDuplicates: true,
+  });
   console.log('✅ Seed completed successfully!');
 }
 

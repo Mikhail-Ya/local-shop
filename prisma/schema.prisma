@@ -44,14 +44,12 @@ model Product {
   slug        String   @unique
   description String?
   price       Float
-  in_stock    Boolean  @default(true)
+  stock       Int      @default(0)  
   images      String[]
   attributes  Json?
 
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
-
-  // Скалярное поле
   category_id String
 
   // Связь
