@@ -3,6 +3,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import  style  from './productForm.module.css'; 
 
 interface ProductFormProps {
   product?: any; // Можно уточнить тип
@@ -142,9 +143,9 @@ export default function ProductForm({ product, categories }: ProductFormProps) {
       <div>
         <label className="flex items-center">
           <input
-            name="in_stock"
+            name="stock"
             type="checkbox"
-            checked={formData.stock}
+            value={formData.stock}
             onChange={handleChange}
             className="mr-2"
           />
@@ -178,7 +179,7 @@ export default function ProductForm({ product, categories }: ProductFormProps) {
         </p>
       </div>
 
-      <div className="flex gap-2">
+      <div className={style.buttonForm + " flex gap-2"}>
         <button
           type="submit"
           className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"

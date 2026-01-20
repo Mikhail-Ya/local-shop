@@ -47,7 +47,7 @@ model Product {
   stock       Int      @default(0)  
   images      String[]
   attributes  Json?
-
+  brand       String?
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
   category_id String

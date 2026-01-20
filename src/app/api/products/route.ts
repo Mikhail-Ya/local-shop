@@ -9,7 +9,11 @@ export async function GET(request: NextRequest) {
     const minPrice = searchParams.get('minPrice');
     const maxPrice = searchParams.get('maxPrice');
 
-    const where: any = { in_stock: true };
+    const where: any = {};
+
+    if (where.stock > 0) {
+        where.stock = { gt: 0 }; // "greater than 0"
+    } 
 
     if (categoryId) {
       where.category_id = categoryId;

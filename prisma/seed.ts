@@ -24,10 +24,12 @@ async function main() {
   });
   await prisma.category.createMany({
      data:[
-      { name: 'Туризм', slug: 'turizm', description: 'Товары для отдыха на природе' },
-    { name: 'Дача', slug: 'dacha', description: 'Всё для дачи и сада' },
-    { name: 'Дом', slug: 'dom', description: 'Товары для дома' },
-    ],
+  { name: 'Туризм', slug: 'turizm', description: 'Товары для отдыха на природе и походов' },
+  { name: 'Отдых', slug: 'otdyh', description: 'Товары для пикников и активного отдыха' },
+  { name: 'Дача', slug: 'dacha', description: 'Всё для дачи, сада и загородного дома' },
+  { name: 'Огород', slug: 'ogorod', description: 'Инструменты и техника для сада и огорода' },
+  { name: 'Бытовая техника', slug: 'bytovaya-tehnika', description: 'Техника для дома и кухни' }
+],
     skipDuplicates: true,
   });
   console.log('✅ Seed completed successfully!');

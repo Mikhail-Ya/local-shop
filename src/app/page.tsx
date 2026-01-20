@@ -1,5 +1,6 @@
 
 import WeeklyProducts from '@/components/ui/WeeklyProducts';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -11,7 +12,7 @@ export default function Home() {
                     <div className="banner-content">
                         <h2>Распродажа бытовой техники</h2>
                         <p>Скидки до 30% на технику для дома</p>
-                        <a href="pages/sales.html" className="btn btn-white">Смотреть акции</a>
+                        <a href="/catalog" className="btn btn-white">Смотреть акции</a>
                     </div>
                     <div className="banner-icon">
                         <i className="fas fa-tags"></i>
@@ -43,54 +44,54 @@ export default function Home() {
         <div className="container">
             <h2 className="section-title"><i className="fas fa-th-large"></i> Популярные категории</h2>
             <div className="categories-grid">
-                <a href="pages/catalog.html?category=kitchen" className="category-card">
+                <Link href="/catalog" className="category-card">
                     <div className="category-icon">
                         <i className="fas fa-blender"></i>
                     </div>
                     <h3>Кухонная техника</h3>
                     <p>Холодильники, плиты, микроволновки</p>
                     <span className="category-arrow"><i className="fas fa-arrow-right"></i></span>
-                </a>
-                <a href="pages/catalog.html?category=cleaning" className="category-card">
+                </Link>
+                <Link href="/catalog" className="category-card">
                     <div className="category-icon">
                         <i className="fas fa-broom"></i>
                     </div>
                     <h3>Для уборки</h3>
                     <p>Пылесосы, роботы-пылесосы</p>
                     <span className="category-arrow"><i className="fas fa-arrow-right"></i></span>
-                </a>
-                <a href="pages/catalog.html?category=climat" className="category-card">
+                </Link>
+                <Link href="/catalog" className="category-card">
                     <div className="category-icon">
                         <i className="fas fa-fan"></i>
                     </div>
                     <h3>Климатическая</h3>
                     <p>Кондиционеры, обогреватели</p>
                     <span className="category-arrow"><i className="fas fa-arrow-right"></i></span>
-                </a>
-                <a href="pages/catalog.html?category=computers" className="category-card">
+                </Link>
+                <Link href="/catalog" className="category-card">
                     <div className="category-icon">
                         <i className="fas fa-laptop"></i>
                     </div>
                     <h3>Компьютерная</h3>
                     <p>Ноутбуки, мониторы, аксессуары</p>
                     <span className="category-arrow"><i className="fas fa-arrow-right"></i></span>
-                </a>
-                <a href="pages/catalog.html?category=audio" className="category-card">
+                </Link>
+                <Link href="/catalog" className="category-card">
                     <div className="category-icon">
                         <i className="fas fa-volume-up"></i>
                     </div>
                     <h3>Аудио-видео</h3>
                     <p>Телевизоры, колонки, наушники</p>
                     <span className="category-arrow"><i className="fas fa-arrow-right"></i></span>
-                </a>
-                <a href="pages/catalog.html?category=lighting" className="category-card">
+                </Link>
+                <Link href="/catalog" className="category-card">
                     <div className="category-icon">
                         <i className="fas fa-lightbulb"></i>
                     </div>
                     <h3>Освещение</h3>
                     <p>Люстры, светильники, лампы</p>
                     <span className="category-arrow"><i className="fas fa-arrow-right"></i></span>
-                </a>
+                </Link>
             </div>
         </div>
     </section>

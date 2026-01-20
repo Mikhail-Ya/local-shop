@@ -18,9 +18,9 @@ export default function Navbar() {
                     <span>Доставка по городу и области</span>
                 </div>
                 <div className="top-links">
-                    <a href="pages/about.html"><i className="fas fa-info-circle"></i> О компании</a>
-                    <a href="pages/delivery.html"><i className="fas fa-truck"></i> Доставка и оплата</a>
-                    <a href="pages/contacts.html"><i className="fas fa-phone"></i> Контакты</a>
+                    <Link href="/pages/about.html"><i className="fas fa-info-circle"></i> О компании</Link>
+                    <Link href="/pages/delivery.html"><i className="fas fa-truck"></i> Доставка и оплата</Link>
+                    <Link href="/pages/contacts.html"><i className="fas fa-phone"></i> Контакты</Link>
                 </div>
             </div>
         </div>
@@ -42,14 +42,17 @@ export default function Navbar() {
                         </div>
                     </div>
                     <div className="cart-block">
-                        <a href="pages/cart.html" className="cart-link">
+                        <Link href="/pages/cart.html" className="cart-link">
                             <i className="fas fa-shopping-cart"></i>
                             <div>
                                 <span className="cart-text">Корзина</span>
                                 <span className="cart-total">12 450 ₽</span>
                             </div>
                             <span className="cart-count">3</span>
-                        </a>
+                        </Link>
+                        <Link href="/profile" className="text-white hover:underline">
+                             Кабинет
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -61,29 +64,29 @@ export default function Navbar() {
                 </div>
                 <nav className="navbar">
                     <ul>
-                        <li><a href="index.html" className="active"><i className="fas fa-home"></i> Главная</a></li>
+                        <li><Link href="/" className="active"><i className="fas fa-home"></i> Главная</Link></li>
                         <li className="dropdown">
-                            <a href="#"><i className="fas fa-tv"></i> Техника <i className="fas fa-chevron-down"></i></a>
+                            <Link href="/"><i className="fas fa-tv"></i> Техника <i className="fas fa-chevron-down"></i></Link>
                             <div className="dropdown-content">
-                                <a href="pages/catalog.html?category=kitchen"><i className="fas fa-blender"></i> Кухонная техника</a>
-                                <a href="pages/catalog.html?category=cleaning"><i className="fas fa-broom"></i> Для уборки</a>
-                                <a href="pages/catalog.html?category=climat"><i className="fas fa-fan"></i> Климатическая</a>
-                                <a href="pages/catalog.html?category=computers"><i className="fas fa-laptop"></i> Компьютерная</a>
-                                <a href="pages/catalog.html?category=audio"><i className="fas fa-volume-up"></i> Аудио-видео</a>
+                                <Link href="/"><i className="fas fa-blender"></i> Кухонная техника</Link>
+                                <Link href="/"><i className="fas fa-broom"></i> Для уборки</Link>
+                                <Link href="/"><i className="fas fa-fan"></i> Климатическая</Link>
+                                <Link href="/"><i className="fas fa-laptop"></i> Компьютерная</Link>
+                                <Link href="/"><i className="fas fa-volume-up"></i> Аудио-видео</Link>
                             </div>
                         </li>
                         <li className="dropdown">
-                            <a href="#"><i className="fas fa-home"></i> Для дома <i className="fas fa-chevron-down"></i></a>
+                            <Link href="/#"><i className="fas fa-home"></i> Для дома <i className="fas fa-chevron-down"></i></Link>
                             <div className="dropdown-content">
-                                <a href="pages/catalog.html?category=lighting"><i className="fas fa-lightbulb"></i> Освещение</a>
-                                <a href="pages/catalog.html?category=textile"><i className="fas fa-bed"></i> Текстиль</a>
-                                <a href="pages/catalog.html?category=furniture"><i className="fas fa-couch"></i> Мебель</a>
-                                <a href="pages/catalog.html?category=dishes"><i className="fas fa-utensils"></i> Посуда</a>
+                                <Link href="/"><i className="fas fa-lightbulb"></i> Освещение</Link>
+                                <Link href="/"><i className="fas fa-bed"></i> Текстиль</Link>
+                                <Link href="/"><i className="fas fa-couch"></i> Мебель</Link>
+                                <Link href="/"><i className="fas fa-utensils"></i> Посуда</Link>
                             </div>
                         </li>
-                        <li><a href="pages/sales.html"><i className="fas fa-percentage"></i> Акции</a></li>
-                        <li><a href="pages/new.html"><i className="fas fa-star"></i> Новинки</a></li>
-                        <li><a href="pages/delivery.html"><i className="fas fa-shipping-fast"></i> Доставка</a></li>
+                        <li><Link href="/"><i className="fas fa-percentage"></i> Акции</Link></li>
+                        <li><Link href="/"><i className="fas fa-star"></i> Новинки</Link></li>
+                        <li><Link href="/"><i className="fas fa-shipping-fast"></i> Доставка</Link></li>
                     </ul>
                 </nav>
             </div>

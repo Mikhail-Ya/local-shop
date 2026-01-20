@@ -105,7 +105,7 @@ console.log()
             </tr>
           </thead>
           <tbody>     
-            {/* products.map((p) => (
+            { products.map((p) => (
               <tr key={p.id} className="hover:bg-gray-50">
                 <td className="border p-2">{p.sku}</td>
                 <td className="border p-2">{p.name}</td>
@@ -127,7 +127,7 @@ console.log()
                   </button>
                 </td>
               </tr>
-            ))*/}
+            ))}
             
           </tbody>
         </table>

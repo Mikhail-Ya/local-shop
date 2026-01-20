@@ -53,7 +53,7 @@ export default function ProductList() {
         {products.map(product => (
           <div key={product.id} className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
             <img src={product.image} alt={product.name} className="w-full h-48 object-cover" />
-            <div className="p-4">
+            <div className={"p-4"}>
               <h3 className="font-semibold">{product.name}</h3>
               <p className="text-lg font-bold text-green-600">{product.price} ₽</p>
               <div className="mt-2 text-sm text-gray-600">
