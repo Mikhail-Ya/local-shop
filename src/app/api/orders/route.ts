@@ -19,7 +19,7 @@ export async function GET() {
   }
 }
 
-
+/*
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -80,7 +80,7 @@ export async function POST(request: NextRequest) {
     console.error('Ошибка создания заказа:', error);
     return NextResponse.json({ error: 'Ошибка сервера' }, { status: 500 });
   }
-}
+}*/
 
 // 1. Схема валидации входящих данных с помощью Zod
 /*const orderSchema = z.object({
