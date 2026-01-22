@@ -1,0 +1,207 @@
+.headerBox {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    height: max-content;
+    width: 99%;
+}
+
+.header {
+    background-color: var(--bg-white);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+}
+
+.headerLogo {
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 1%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.headermain {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+}
+
+.logo h1 {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-bottom: 0.25rem;
+}
+
+.logosubtitle {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.headercontacts {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.phoneblock {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.phonenumber {
+    font-weight: 600;
+    font-size: 1.125rem;
+}
+
+.phonehours {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+.phoneTime {
+    display: flex;
+    flex-direction: column;
+}
+.userCabinet{
+    display: flex;
+}
+
+.cartlink {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--bg-light);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: var(--text-primary);
+    position: relative;
+}
+
+.cartcount {
+    position: absolute;
+    top: -0.5rem;
+    right: -0.5rem;
+    background-color: var(--accent-color);
+    color: white;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+}
+
+.headerbottom {
+    border-top: 1px solid var(--border-color);
+    padding: 1rem 1rem;
+    width: 100%;
+}
+
+.searchcontainer {
+    margin-bottom: 1rem;
+        display: grid;
+    grid-template-columns: 1fr max-content;
+}
+
+.searchcontainer input {
+    padding-left: 1rem;
+    flex: 1;
+    padding: 0.75rem 0.9rem;
+    border-radius: var(--radius-md) 0 0 var(--radius-md);
+    font-size: 1rem;
+    outline: 1px solid var(--border-color);
+}
+
+.searchbox {
+    display: flex;
+    max-width: 600px;
+}
+
+.searchbtn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    font-weight: 600;
+    width: max-content;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.searchbtn:hover {
+    background-color: var(--primary-dark);
+}
+
+.navbar ul {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: var(--text-primary);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+    position: relative;
+}
+
+.navbar a.active {
+    color: var(--primary-color);
+}
+
+.navbar a.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+}
+
+/* Выпадающее меню */
+.dropdown {
+    position: relative;
+}
+
+.dropdowncontent {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: var(--shadow-lg);
+    border-radius: var(--radius-md);
+    z-index: 1000;
+    padding: 0.5rem 0;
+}
+
+.dropdown:hover .dropdowncontent {
+    display: block;
+}
+
+.dropdowncontent a {
+    display: block;
+    padding: 0.75rem 1rem;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.dropdowncontent a:hover {
+    background-color: var(--bg-light);
+}

@@ -28,7 +28,8 @@ async function main() {
   { name: 'Отдых', slug: 'otdyh', description: 'Товары для пикников и активного отдыха' },
   { name: 'Дача', slug: 'dacha', description: 'Всё для дачи, сада и загородного дома' },
   { name: 'Огород', slug: 'ogorod', description: 'Инструменты и техника для сада и огорода' },
-  { name: 'Бытовая техника', slug: 'bytovaya-tehnika', description: 'Техника для дома и кухни' }
+  { name: 'Бытовая техника', slug: 'bytovaya-tehnika', description: 'Техника для дома и кухни' },
+  {name: 'tech', slug: 'tehnika',description:'техника'}
 ],
     skipDuplicates: true,
   });

@@ -1,4 +1,3 @@
-
 // prisma/schema.prisma
 
 generator client {
@@ -20,86 +19,73 @@ model User {
 }
 
 model Category {
-  id        String     @id @default(cuid())
-  name      String
-  slug      String     @unique
-  description String?
-  
-  // Скалярное поле — внешний ключ
-  parent_id String?   // ← просто поле, без @relation!
-
-  // Связь "родитель"
-  parent    Category?  @relation("CategoryParent", fields: [parent_id], references: [id])
-
-  // Связь "потомки"
-  children  Category[] @relation("CategoryParent")
-
+  id        String    @id @default(cuid())
+  name      String    @unique
   products  Product[]
+  createdAt DateTime  @default(now())
 }
 
 model Product {
-  id          String   @id @default(cuid())
-  sku         String   @unique
+  id          String      @id @default(cuid())
   name        String
-  slug        String   @unique
   description String?
-  price       Float
-  stock       Int      @default(0)  
-  images      String[]
-  attributes  Json?
+  price       Decimal
+  stock       Int         @default(0)
+  imageUrl    String?
+  categoryId  String?
+  category    Category?   @relation(fields: [categoryId], references: [id])
+  orders      OrderItem[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
   brand       String?
-  created_at  DateTime @default(now())
-  updated_at  DateTime @updatedAt
-  category_id String
 
-  // Связь
-  category    Category @relation(fields: [category_id], references: [id])
-
-  orderItems  OrderItem[]
+  @@index([categoryId])
 }
 
 model Order {
-  id                      String    @id @default(cuid())
-  user_id                 String?   
-  user                    User?     @relation(fields: [user_id], references: [id])
-  status                  String    @default("new")
-  customer_name           String
-  customer_phone          String
-  customer_email          String
-  
-  // Связь с DeliveryZone
-  delivery_zone_id        String
-  deliveryZone            DeliveryZone @relation(fields: [delivery_zone_id], references: [id])
-  
-  delivery_address        String?
-  delivery_estimated_date DateTime?
-  total_amount            Float
-  created_at              DateTime @default(now())
-  orderItems              OrderItem[]
+  id              String        @id @default(cuid())
+  userId          String
+  customerName    String
+  customerPhone   String
+  customerEmail   String?
+  deliveryZoneId  String? // Связь с зоной доставки, если выбран этот способ
+  deliveryAddress String? // Адрес, если доставка
+  pickupPoint     Boolean       @default(false) // Флаг самовывоза
+  totalAmount     Decimal
+  status          OrderStatus   @default(PENDING)
+  items           OrderItem[]
+  deliveryZone    DeliveryZone? @relation(fields: [deliveryZoneId], references: [id])
+  createdAt       DateTime      @default(now())
+  user            User          @relation(fields: [userId], references: [id])
+
+  @@index([deliveryZoneId])
+}
+
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
 }
 
 model DeliveryZone {
-  id                  String   @id @default(cuid())
-  city_name           String   @unique
-  delivery_days_min   Int
-  delivery_days_max   Int
-  is_active           Boolean  @default(true)
-  created_at          DateTime @default(now())
-  orders              Order[]  // ← обратная связь
+  id          String   @id @default(cuid())
+  name        String   @unique // Название (например, "Осташков")
+  code        String   @unique // Код (например, "ostashkov")
+  deliveryFee Decimal? @default(0) // Стоимость доставки для зоны
+  isActive    Boolean  @default(true)
+  orders      Order[]
 }
 
 model OrderItem {
-  id         String   @id @default(cuid())
-  
-  // Скалярные поля
-  order_id   String
-  product_id String
+  id        String  @id @default(cuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Decimal // Цена на момент заказа (snapshot)
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id])
 
-  // Связи
-  order      Order    @relation(fields: [order_id], references: [id])
-  product    Product  @relation(fields: [product_id], references: [id])
-
-  quantity   Int
-  unit_price Float
-  created_at DateTime @default(now())
+  @@unique([orderId, productId])
 }

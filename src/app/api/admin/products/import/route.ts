@@ -13,6 +13,7 @@ interface CsvRow {
   description?: string;
   price: string; // будет преобразовано в число
   category_slug: string;
+  brand?: string;
   stock: string;
   images?: string; // строки, разделённые \n или ;
   attributes?: string; // JSON-строка
@@ -128,7 +129,7 @@ console.log('🔍 Начало импорта...');
             throw new Error('Некорректный JSON в поле "attributes"');
           }
         }
-
+        
         const slug = row.slug?.trim() || row.name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
         // 6. Upsert в БД
@@ -145,6 +146,7 @@ console.log('🔍 Начало импорта...');
               stock: parseInt(row.stock),
               images,
               attributes,
+              brand: row.brand || '-',
             },
           });
           results.updated++;
@@ -160,6 +162,7 @@ console.log('🔍 Начало импорта...');
               stock: parseInt(row.stock),
               images,
               attributes,
+              brand: row.brand || '-',
             },
           });
           results.created++;

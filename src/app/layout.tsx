@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import Navbar from "@/components/ui/Navbar";
-import Footer from "@/components/ui/Footer";
+import { CartProvider } from "@/context/CartContext";
+import Navbar from "@/components/ui/header/Navbar";
+import Footer from "@/components/ui/footer/Footer";
+
+import { Inter } from "next/font/google";
 import "./globals.css";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,11 +29,33 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="ru">
+      <head>
+        <link 
+          rel="stylesheet" 
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+         /> 
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <CartProvider>
         <header>
+        <div className="top-bar">
+          <div className="container">
+              <div className="top-bar-content">
+                  <div className="location">
+                      <i className="fas fa-map-marker-alt"></i>
+                      <span>Доставка по городу и области</span>
+                  </div>
+                  <div className="top-links">
+                      <Link href="/"><i className="fas fa-info-circle"></i> О компании</Link>
+                      <Link href="/"><i className="fas fa-truck"></i> Доставка и оплата</Link>
+                      <Link href="/"><i className="fas fa-phone"></i> Контакты</Link>
+                  </div>
+              </div>
+          </div>
+        </div>
           <Navbar />
         </header>
         <main>
@@ -38,6 +64,7 @@ export default function RootLayout({
         <footer>
           <Footer />
         </footer>
+        </CartProvider>
       </body>
     </html>
   );

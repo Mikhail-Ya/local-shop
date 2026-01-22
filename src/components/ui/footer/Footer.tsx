@@ -18,30 +18,30 @@ export default function Footer() {
                 <div className="footer-column">
                     <h3>Каталог</h3>
                     <ul>
-                        <li><a href="pages/catalog.html?category=kitchen">Кухонная техника</a></li>
-                        <li><a href="pages/catalog.html?category=cleaning">Техника для уборки</a></li>
-                        <li><a href="pages/catalog.html?category=climat">Климатическая техника</a></li>
-                        <li><a href="pages/catalog.html?category=computers">Компьютерная техника</a></li>
+                        <li><a href="">Кухонная техника</a></li>
+                        <li><a href="">Техника для уборки</a></li>
+                        <li><a href="">Климатическая техника</a></li>
+                        <li><a href="">Компьютерная техника</a></li>
                     </ul>
                 </div>
                 
                 <div className="footer-column">
                     <h3>Покупателям</h3>
                     <ul>
-                        <li><a href="pages/delivery.html">Доставка и оплата</a></li>
-                        <li><a href="pages/warranty.html">Гарантия</a></li>
-                        <li><a href="pages/return.html">Возврат товара</a></li>
-                        <li><a href="pages/credit.html">Кредит и рассрочка</a></li>
+                        <li><a href="">Доставка и оплата</a></li>
+                        <li><a href="">Гарантия</a></li>
+                        <li><a href="">Возврат товара</a></li>
+                        <li><a href="">Кредит и рассрочка</a></li>
                     </ul>
                 </div>
                 
                 <div className="footer-column">
                     <h3>Компания</h3>
                     <ul>
-                        <li><a href="pages/about.html">О компании</a></li>
-                        <li><a href="pages/contacts.html">Контакты</a></li>
-                        <li><a href="pages/vacancies.html">Вакансии</a></li>
-                        <li><a href="pages/reviews.html">Отзывы</a></li>
+                        <li><a href="">О компании</a></li>
+                        <li><a href="">Контакты</a></li>
+                        <li><a href="">Вакансии</a></li>
+                        <li><a href="">Отзывы</a></li>
                     </ul>
                 </div>
             </div>

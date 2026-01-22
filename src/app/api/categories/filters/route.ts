@@ -5,28 +5,29 @@ export async function GET() {
   try {
     // 1. Получаем все категории
     const categories = await prisma.category.findMany({
-      select: { id: true, name: true, slug: true },
+      select:{ id: true, 
+         name: true,
+         slug: true,
+      },
     });
 
     // 2. Получаем все уникальные бренды из товаров
-    const productsWithBrands = await prisma.product.findMany({
-      where: {
-        attributes: { not: null },
-        stock: { gt: 0 }, // только товары в наличии
-      },
-      select: {
-        attributes: true,
-      },
-    });
+    const brandResults = await prisma.product.groupBy({
+  by: ['brand'],
+  where: {
+    brand: {
+      not: null,
+      not: ''
+    }
+  },
+  orderBy: {
+    brand: 'asc'
+  }
+});
 
-    // Извлекаем бренды и делаем их уникальными
-    const brands = Array.from(
-      new Set(
-        productsWithBrands
-          .map(p => p.attributes?.brand)
-          .filter(brand => typeof brand === 'string' && brand.trim() !== '')
-      )
-    ).sort();
+const brands = brandResults
+  .map(item => item.brand)
+  .filter((brand): brand is string => typeof brand === 'string');
 
     return NextResponse.json({ categories, brands });
   } catch (error) {
