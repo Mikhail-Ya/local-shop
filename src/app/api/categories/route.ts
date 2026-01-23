@@ -5,9 +5,9 @@ import { prisma } from '@/lib/prisma';
 export async function GET() {
   try {
     const categories = await prisma.category.findMany({
-      where: { parent_id: null }, // только корневые
+      where: { id: true }, // только корневые
       include: {
-        children: true,
+        name: true,
       },
     });
 

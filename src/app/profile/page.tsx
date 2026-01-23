@@ -72,7 +72,7 @@ export default function ProfilePage() {
           <p className="mb-4 text-green-600">✅ Вы вошли как администратор</p>
           <div className="flex gap-3">
             <button
-              onClick={() => router.push('/admin/products')}
+              onClick={() => router.push('/admin')}
               className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
             >
               Перейти в админку

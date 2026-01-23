@@ -1,65 +1,65 @@
 // src/components/admin/ProductForm.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import  style  from './productForm.module.css'; 
+import { useState } from 'react';
 
-interface ProductFormProps {
-  product?: any; // Можно уточнить тип
-  categories: { id: string; name: string }[];
+interface Category {
+  id: string;
+  name: string;
 }
 
-export default function ProductForm({ product, categories }: ProductFormProps) {
-  const router = useRouter();
-  const [formData, setFormData] = useState({
-    sku: product?.sku || '',
-    name: product?.name || '',
-    slug: product?.slug || '',
-    description: product?.description || '',
-    price: product?.price?.toString() || '',
-    category_id: product?.category_id || categories[0]?.id || '',
-    stock: parseInt(product?.stock) ?? 0,
-    images: product?.images?.join('\n') || '',
-    attributes: JSON.stringify(product?.attributes || {}, null, 2),
+interface Props {
+  categories: Category[];
+}
+
+export default function ProductForm({ categories }: Props) {
+  const [productData, setProductData] = useState({
+    name: '',
+    description: '',
+    price: '',
+    stock: '',
+    brand: '',
+    categoryId: '',
+    imageUrl: '',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
-    }));
+    const { name, value } = e.target;
+    setProductData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const payload = {
-      ...formData,
-      price: parseFloat(formData.price),
-      stock: formData.stock || 0,
-      images: formData.images.split('\n').filter(s => s.trim()),
-      attributes: JSON.parse(formData.attributes || '{}'),
-    };
+    const priceNum = parseFloat(productData.price);
+    const stockNum = parseInt(productData.stock, 10);
+
+    if (isNaN(priceNum) || priceNum <= 0) {
+      alert('Некорректная цена');
+      return;
+    }
+    if (isNaN(stockNum) || stockNum < 0) {
+      alert('Некорректный остаток');
+      return;
+    }
 
     try {
-      const url = product
-        ? `/api/admin/products/${product.id}`
-        : '/api/admin/products';
-      const method = product ? 'PUT' : 'POST';
-
-      const res = await fetch(url, {
-        method,
+      const res = await fetch('/api/admin/products', {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          ...productData,
+          price: priceNum,
+          stock: stockNum,
+          categoryId: productData.categoryId || null,
+        }),
       });
 
       if (res.ok) {
-        alert(product ? 'Товар обновлён!' : 'Товар создан!');
-        router.push('/admin/products');
+        alert('Товар добавлен!');
+        // Можно перенаправить или очистить форму
       } else {
-        alert('Ошибка сохранения');
+        alert('Ошибка при создании товара');
       }
     } catch (err) {
       console.error(err);
@@ -68,72 +68,66 @@ export default function ProductForm({ product, categories }: ProductFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-2xl">
+    <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block">Артикул (SKU) *</label>
+        <label className="block mb-1">Название *</label>
         <input
-          name="sku"
-          value={formData.sku}
-          onChange={handleChange}
-          required
-          className="w-full p-2 border rounded"
-        />
-      </div>
-
-      <div>
-        <label className="block">Название *</label>
-        <input
+          type="text"
           name="name"
-          value={formData.name}
+          value={productData.name}
           onChange={handleChange}
+          className="w-full p-2 border rounded"
           required
-          className="w-full p-2 border rounded"
         />
       </div>
 
       <div>
-        <label className="block">URL (slug)</label>
+        <label className="block mb-1">Цена (₽) *</label>
         <input
-          name="slug"
-          value={formData.slug}
-          onChange={handleChange}
-          placeholder="palatka-hiker"
-          className="w-full p-2 border rounded"
-        />
-      </div>
-
-      <div>
-        <label className="block">Описание</label>
-        <textarea
-          name="description"
-          value={formData.description}
-          onChange={handleChange}
-          rows={3}
-          className="w-full p-2 border rounded"
-        />
-      </div>
-
-      <div>
-        <label className="block">Цена (₽) *</label>
-        <input
-          name="price"
           type="number"
-          step="0.01"
-          value={formData.price}
+          name="price"
+          value={productData.price} // ← строка, но input type="number" принимает ""
           onChange={handleChange}
+          className="w-full p-2 border rounded"
+          min="0"
+          step="0.01"
           required
+        />
+      </div>
+
+      <div>
+        <label className="block mb-1">Остаток *</label>
+        <input
+          type="number"
+          name="stock"
+          value={productData.stock}
+          onChange={handleChange}
+          className="w-full p-2 border rounded"
+          min="0"
+          required
+        />
+      </div>
+
+      <div>
+        <label className="block mb-1">Бренд</label>
+        <input
+          type="text"
+          name="brand"
+          value={productData.brand}
+          onChange={handleChange}
           className="w-full p-2 border rounded"
         />
       </div>
 
       <div>
-        <label className="block">Категория *</label>
+        <label className="block mb-1">Категория</label>
         <select
-          name="category_id"
-          value={formData.category_id}
+          name="categoryId"
+          value={productData.categoryId}
           onChange={handleChange}
           className="w-full p-2 border rounded"
         >
+          <option value="">Не выбрано</option>
           {categories.map(cat => (
             <option key={cat.id} value={cat.id}>{cat.name}</option>
           ))}
@@ -141,59 +135,33 @@ export default function ProductForm({ product, categories }: ProductFormProps) {
       </div>
 
       <div>
-        <label className="flex items-center">
-          <input
-            name="stock"
-            type="checkbox"
-            value={formData.stock}
-            onChange={handleChange}
-            className="mr-2"
-          />
-          В наличии
-        </label>
-      </div>
-
-      <div>
-        <label className="block">Изображения (по одной ссылке на строку)</label>
-        <textarea
-          name="images"
-          value={formData.images}
+        <label className="block mb-1">URL изображения</label>
+        <input
+          type="url"
+          name="imageUrl"
+          value={productData.imageUrl}
           onChange={handleChange}
-          placeholder="/images/p1.jpg&#10;/images/p2.jpg"
-          rows={3}
           className="w-full p-2 border rounded"
         />
       </div>
 
       <div>
-        <label className="block">Атрибуты (JSON)</label>
+        <label className="block mb-1">Описание</label>
         <textarea
-          name="attributes"
-          value={formData.attributes}
+          name="description"
+          value={productData.description}
           onChange={handleChange}
-          rows={6}
-          className="w-full p-2 border rounded font-mono text-sm"
+          className="w-full p-2 border rounded"
+          rows={4}
         />
-        <p className="text-sm text-gray-600 mt-1">
-          Пример: {"{"}"brand": "Hiker", "purpose": "Отдых"{"]"}
-        </p>
       </div>
 
-      <div className={style.buttonForm + " flex gap-2"}>
-        <button
-          type="submit"
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-        >
-          {product ? 'Сохранить' : 'Создать'}
-        </button>
-        <button
-          type="button"
-          onClick={() => router.back()}
-          className="bg-gray-500 text-white px-4 py-2 rounded"
-        >
-          Отмена
-        </button>
-      </div>
+      <button
+        type="submit"
+        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+      >
+        Создать товар
+      </button>
     </form>
   );
 }

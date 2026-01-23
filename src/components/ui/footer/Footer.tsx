@@ -1,8 +1,10 @@
 // src/components/ui/Footer.tsx
+import Link from "next/link";
+import  my  from "./footer.module.css";
 
 export default function Footer() {
   return (
-    <footer className="footer">
+    <footer className={my.footer}>
         <div className="container">
             <div className="footer-main">
                 <div className="footer-column">
@@ -18,37 +20,37 @@ export default function Footer() {
                 <div className="footer-column">
                     <h3>Каталог</h3>
                     <ul>
-                        <li><a href="">Кухонная техника</a></li>
-                        <li><a href="">Техника для уборки</a></li>
-                        <li><a href="">Климатическая техника</a></li>
-                        <li><a href="">Компьютерная техника</a></li>
+                        <li><Link href="/">Кухонная техника</Link></li>
+                        <li><Link href="/">Техника для уборки</Link></li>
+                        <li><Link href="/">Климатическая техника</Link></li>
+                        <li><Link href="/">Компьютерная техника</Link></li>
                     </ul>
                 </div>
                 
                 <div className="footer-column">
                     <h3>Покупателям</h3>
                     <ul>
-                        <li><a href="">Доставка и оплата</a></li>
-                        <li><a href="">Гарантия</a></li>
-                        <li><a href="">Возврат товара</a></li>
-                        <li><a href="">Кредит и рассрочка</a></li>
+                        <li><Link href="">Доставка и оплата</Link></li>
+                        <li><Link href="">Гарантия</Link></li>
+                        <li><Link href="">Возврат товара</Link></li>
+                        <li><Link href="">Кредит и рассрочка</Link></li>
                     </ul>
                 </div>
                 
                 <div className="footer-column">
                     <h3>Компания</h3>
                     <ul>
-                        <li><a href="">О компании</a></li>
-                        <li><a href="">Контакты</a></li>
-                        <li><a href="">Вакансии</a></li>
-                        <li><a href="">Отзывы</a></li>
+                        <li><Link href="">О компании</Link></li>
+                        <li><Link href="">Контакты</Link></li>
+                        <li><Link href="">Вакансии</Link></li>
+                        <li><Link href="">Отзывы</Link></li>
                     </ul>
                 </div>
             </div>
             
             <div className="footer-bottom">
                 <div className="copyright">
-                    © 2024 Торговый Дом Орион. Все права защищены.
+                    © 2025 Торговый Дом Орион. Все права защищены.
                 </div>
                 <div className="payment-methods">
                     <i className="fab fa-cc-visa"></i>

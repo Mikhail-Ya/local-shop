@@ -7,18 +7,16 @@ export async function GET() {
     const categories = await prisma.category.findMany({
       select:{ id: true, 
          name: true,
-         slug: true,
       },
     });
 
     // 2. Получаем все уникальные бренды из товаров
     const brandResults = await prisma.product.groupBy({
-  by: ['brand'],
-  where: {
-    brand: {
-      not: null,
-      not: ''
-    }
+      by: ['brand'],
+      where: {
+        brand: {
+          not: null
+        }
   },
   orderBy: {
     brand: 'asc'
@@ -27,7 +25,7 @@ export async function GET() {
 
 const brands = brandResults
   .map(item => item.brand)
-  .filter((brand): brand is string => typeof brand === 'string');
+  .filter((brand): brand is string => typeof brand === 'string')||[];
 
     return NextResponse.json({ categories, brands });
   } catch (error) {

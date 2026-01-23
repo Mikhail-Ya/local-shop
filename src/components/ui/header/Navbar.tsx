@@ -5,9 +5,19 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import myStyle from './header.module.css'
+import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+
+  const pathname = usePathname();
+  // Показываем Navbar ТОЛЬКО на главной и в каталоге
+  const showNavbar = pathname === '/' || pathname === '/catalog';
+
+  if (!showNavbar) {
+    return null;
+  }
 
   return (
     <nav className={myStyle.headerBox}>

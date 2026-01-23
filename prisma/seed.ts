@@ -16,20 +16,20 @@ async function main() {
 
   await prisma.deliveryZone.createMany({
      data:[
-      { city_name: 'Осташков', delivery_days_min: 1, delivery_days_max: 2, is_active: true },
-      { city_name: 'Селижарово', delivery_days_min: 2, delivery_days_max: 3, is_active: true },
-      { city_name: 'Пено', delivery_days_min: 3, delivery_days_max: 4, is_active: true },
+      { name: 'Осташков', deliveryFee: 1, code: 'ostashkov', isActive: true },
+      { name: 'Селижарово', deliveryFee: 2, code: 'peno', isActive: true },
+      { name: 'Пено', deliveryFee: 3, code: 'selijarovo', isActive: true },
     ],
     skipDuplicates: true,
   });
   await prisma.category.createMany({
      data:[
-  { name: 'Туризм', slug: 'turizm', description: 'Товары для отдыха на природе и походов' },
-  { name: 'Отдых', slug: 'otdyh', description: 'Товары для пикников и активного отдыха' },
-  { name: 'Дача', slug: 'dacha', description: 'Всё для дачи, сада и загородного дома' },
-  { name: 'Огород', slug: 'ogorod', description: 'Инструменты и техника для сада и огорода' },
-  { name: 'Бытовая техника', slug: 'bytovaya-tehnika', description: 'Техника для дома и кухни' },
-  {name: 'tech', slug: 'tehnika',description:'техника'}
+  { name: 'Туризм' },
+  { name: 'Отдых' },
+  { name: 'Дача' },
+  { name: 'Огород' },
+  { name: 'Бытовая техника'},
+  {name: 'tech'}
 ],
     skipDuplicates: true,
   });
