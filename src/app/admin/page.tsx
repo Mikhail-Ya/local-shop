@@ -1,7 +1,7 @@
 // src/app/admin/page.tsx
 import OrdersTable from '@/components/admin/OrdersTable';
 import Link from 'next/link';
-
+export const dynamic = 'force-dynamic';
 export default function AdminPage() {
   return (
     <div className="container mx-auto py-8">

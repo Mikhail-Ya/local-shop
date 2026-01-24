@@ -3,28 +3,54 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import myStyle from './header.module.css'
 import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-
+const [user, setUser] = useState<{ email: string; role?: string } | null>(null);
   const pathname = usePathname();
+
+  useEffect(() => {
+    // Проверяем наличие cookies или делаем запрос к API
+    const checkAuth = async () => {
+      try {
+        const res = await fetch('/api/auth/me');
+        if (res.ok) {
+          const data = await res.json();
+          setUser(data.user);
+        } else {
+          setUser(null);
+        }
+      } catch (e) {
+        setUser(null);
+      }
+    };
+    checkAuth();
+  }, [pathname]);
+
+    const handleLogout = async () => {
+        await fetch('/api/auth/logout', { method: 'POST' });
+        setUser(null);
+        window.location.href = '/'; // принудительный редирект
+    };
+ /* const pathname = usePathname();
   // Показываем Navbar ТОЛЬКО на главной и в каталоге
   const showNavbar = pathname === '/' || pathname === '/catalog';
 
   if (!showNavbar) {
     return null;
-  }
+  }*/
 
   return (
     <nav className={myStyle.headerBox}>
         <header className={myStyle.header}>
             <div className={myStyle.headerLogo}>
                     <div className={myStyle.logo}>
+                        <Link href={'/'}>
                         <h1><i className={myStyle.k}></i> Магазин Next69</h1>
+                        </Link>
                         <p className={myStyle.logosubtitle}>Бытовая техника и товары для дома</p>
                     </div>
                 <div className={myStyle.phoneblock}>
@@ -35,23 +61,29 @@ export default function Navbar() {
                     </div>
                 </div>
                 <div className={myStyle.userCabinet}>
-                    <Link href="/profile" className={myStyle.cartlink}>
-                        <i className={"fas fa-circle-user"}></i>
-                        <div>
-                            <span className={myStyle.carttext}>Личный кабинет</span>
-                        </div>
-                    </Link>
-                    <Link href="/cart" className={myStyle.cartlink}>
-                        <i className={"fas fa-shopping-cart"}></i>
-                        <div>
-                            <span className={myStyle.carttext}>Корзина</span>
-                            <span className={myStyle.carttotal}>12 450 ₽</span>
-                        </div>
-                        <span className={myStyle.cartcount}>3</span>
-                    </Link>
+                    {user != null ? (
+                        <Link href={"profile"} className={myStyle.cartlink}>
+                            <i className={"fas fa-circle-user"}></i>
+                            <Link href="/profile" className="block px-4 py-2 hover:bg-gray-100">Личный кабинет</Link>
+                            {user.role === 'admin' && (
+                            <Link href="/admin" className="block px-4 py-2 hover:bg-gray-100">Админка</Link>
+                            )}
+                        </Link>
+                        ) : (
+                        <Link href="/login" className="hover:underline">Вход</Link>
+                        )}
+                        <Link href="/cart" className={myStyle.cartlink}>
+                            <i className={"fas fa-shopping-cart"}></i>
+                            <div>
+                                <span className={myStyle.carttext}>Корзина</span>
+                                <span className={myStyle.carttotal}>12 450 ₽</span>
+                            </div>
+                            <span className={myStyle.cartcount}>3</span>
+                        </Link>
                 </div>
             </div>
-            <div className={myStyle.headerbottom}>
+            { pathname === '/' ? (
+                <div className={myStyle.headerbottom}>
                     <div className={myStyle.searchcontainer}>
                         <input type='text' placeholder="Поиск по каталогу бытовой техники..." />
                         <button className={myStyle.searchbtn}><i className={"fas fa-search"}></i> Найти</button>
@@ -83,7 +115,8 @@ export default function Navbar() {
                             <li><Link href="/"><i className={"fas fa-shipping-fast"}></i> Доставка</Link></li>
                         </ul>
                     </nav>
-            </div>
+            </div>) : ( <div> </div> )
+            }
         </header>
 
       {/* Мобильное меню */}

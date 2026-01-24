@@ -1,44 +1,47 @@
 // prisma/seed.ts
+import 'dotenv/config';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '@prisma/client';
-import 'dotenv/config';
+import * as bcrypt from 'bcryptjs';
 
-// Проверяем, что DATABASE_URL задан
-if (!process.env.DATABASE_URL) {
-  throw new Error('❌ DATABASE_URL is not set in environment variables');
+const connectionString = process.env.DATABASE_URL;
+
+if (!connectionString) {
+  throw new Error('❌ DATABASE_URL is not set');
 }
 
-const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
+const adapter = new PrismaPg({ connectionString });
 const prisma = new PrismaClient({ adapter });
 
+function hashPassword(password: string): string {
+  return bcrypt.hashSync(password, 12);
+}
+
 async function main() {
-  console.log('🌱 Seeding delivery zones...');
+  await prisma.user.upsert({
+    where: { email: 'admin@localshop.ru' },
+    update: {},
+    create: {
+      email: 'admin@localshop.ru',
+      password_hash: hashPassword('secure_password_123'),
+      full_name: 'Администратор',
+      role: 'admin',
+    },
+  });
 
   await prisma.deliveryZone.createMany({
      data:[
-      { name: 'Осташков', deliveryFee: 1, code: 'ostashkov', isActive: true },
-      { name: 'Селижарово', deliveryFee: 2, code: 'peno', isActive: true },
-      { name: 'Пено', deliveryFee: 3, code: 'selijarovo', isActive: true },
+      { name: 'Осташков', code: 'ostashkov', deliveryFee: 0, isActive: true },
+      { name: 'Селижарово', code: 'selizharovo', deliveryFee: 100, isActive: true },
+      { name: 'Пено', code: 'peno', deliveryFee: 150, isActive: true },
     ],
     skipDuplicates: true,
   });
-  await prisma.category.createMany({
-     data:[
-  { name: 'Туризм' },
-  { name: 'Отдых' },
-  { name: 'Дача' },
-  { name: 'Огород' },
-  { name: 'Бытовая техника'},
-  {name: 'tech'}
-],
-    skipDuplicates: true,
-  });
-  console.log('✅ Seed completed successfully!');
 }
 
 main()
-  .catch((e) => {
-    console.error('❌ Error during seeding:', e);
+  .catch(e => {
+    console.error('❌ Seed error:', e);
     process.exit(1);
   })
   .finally(async () => {
