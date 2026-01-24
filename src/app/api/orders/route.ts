@@ -9,7 +9,7 @@ export async function GET() {
       include: {
         deliveryZone: true,
       },
-      orderBy: { created_at: 'desc' },
+      orderBy: { createdAt: 'desc' },
     });
 
     return NextResponse.json(orders);

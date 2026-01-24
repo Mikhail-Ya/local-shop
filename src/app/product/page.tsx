@@ -97,27 +97,24 @@ export default function ProductPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Изображение */}
           <div className="border rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center">
-            {product.images && product.images.length > 0 ? (
+            {product.imageUrl && product.imageUrl.length > 0 ? (
               <img
-                src={product.images[0]}
+                src={product.imageUrl[0]}
                 alt={product.name}
                 className="w-full h-auto object-contain p-4"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = '/placeholder.jpg';
-                }}
               />
             ) : (
-              <div className="text-gray-500 py-16">Нет изображения</div>
+              <div className="text-gray-500 py-12">Изображение отсутствует</div>
             )}
           </div>
 
           {/* Информация о товаре */}
           <div>
             <h1 className="text-3xl font-bold mb-2">{product.name}</h1>
-            <p className="text-gray-600 mb-4">Артикул: {product.sku}</p>
+            
 
             <div className="mb-4">
-              <span className="text-2xl font-bold text-green-600">{product.price} ₽</span>
+              <span className="text-2xl font-bold text-green-600">{Number(product.price).toFixed(2)} ₽</span>
               {product.stock > 0 ? (
                 <span className="ml-3 text-green-600">✓ В наличии</span>
               ) : (

@@ -1,59 +1,53 @@
 // src/components/checkout/CheckoutStep2.tsx
-
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { OrderData } from '@/types/order'; // ← создадим этот тип ниже
 
-interface Props {
-  orderData: any;
+interface CheckoutStep2Props {
+  orderData: OrderData;
   onBack: () => void;
+  onSubmit: () => Promise<void>; // ← добавили!
 }
 
-export default function CheckoutStep2({ orderData, onBack }: Props) {
-  const router = useRouter();
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Здесь будет отправка заказа на сервер
-    // Для демонстрации просто перенаправляем на страницу успеха
-    router.push('/order-success');
-  };
-
+export default function CheckoutStep2({ orderData, onBack, onSubmit }: CheckoutStep2Props) {
   return (
     <div className="bg-white p-6 rounded-lg shadow">
       <h2 className="text-xl font-bold mb-4">Шаг 2: Подтверждение заказа</h2>
 
+      {/* Отображение товаров */}
       <div className="mb-6">
         <h3 className="font-semibold mb-2">Ваш заказ</h3>
         <div className="border rounded p-4">
-          <div className="flex justify-between mb-2">
-            <span>Палатка "Hiker"</span>
-            <span>1 x 7 490 ₽</span>
-          </div>
-          <div className="flex justify-between mb-2">
-            <span>Спальник "Tramp"</span>
-            <span>1 x 4 900 ₽</span>
-          </div>
+          {orderData.items.map((item, idx) => (
+            <div key={idx} className="flex justify-between mb-2">
+              <span>{item.name}</span>
+              <span>{item.quantity} × {item.price} ₽</span>
+            </div>
+          ))}
           <hr className="my-2" />
           <div className="flex justify-between font-bold">
             <span>ИТОГО:</span>
-            <span>12 480 ₽</span>
+            <span>{orderData.totalAmount} ₽</span>
           </div>
         </div>
       </div>
 
+      {/* Доставка */}
       <div className="mb-6">
         <h3 className="font-semibold mb-2">Доставка</h3>
         <div className="border rounded p-4">
           <div className="mb-2">
-            <span className="font-medium">Доставка в:</span> {orderData.deliveryCity === 'ostashkov' ? 'Осташков' : orderData.deliveryCity === 'selizharovo' ? 'Селижарово' : 'Пено'}
+            <span className="font-medium">Город:</span> {orderData.deliveryCity}
           </div>
-          <div>
-            <span className="font-medium">Примерная дата:</span> 30 февраля {/* Заглушка */}
-          </div>
+          {orderData.deliveryAddress && (
+            <div>
+              <span className="font-medium">Адрес:</span> {orderData.deliveryAddress}
+            </div>
+          )}
         </div>
       </div>
 
+      {/* Контакты */}
       <div className="mb-6">
         <h3 className="font-semibold mb-2">Контактные данные</h3>
         <div className="border rounded p-4">
@@ -63,24 +57,17 @@ export default function CheckoutStep2({ orderData, onBack }: Props) {
         </div>
       </div>
 
-      <div className="mb-6">
-        <h3 className="font-semibold mb-2">Адрес</h3>
-        <div className="border rounded p-4">
-          {orderData.deliveryAddress || 'Не указан'}
-        </div>
-      </div>
-
       <div className="flex justify-between">
         <button
           type="button"
-          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
           onClick={onBack}
+          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
         >
           Назад
         </button>
         <button
-          type="submit"
-          onClick={handleSubmit}
+          type="button"
+          onClick={onSubmit} // ← вызываем onSubmit
           className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
         >
           Подтвердить заказ

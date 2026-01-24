@@ -5,12 +5,12 @@ import { prisma } from '@/lib/prisma';
 export async function GET() {
   try {
     const zones = await prisma.deliveryZone.findMany({
-      where: { is_active: true },
-      orderBy: { city_name: 'asc' },
+      where: { isActive: true }, // ✅ camelCase, как в схеме
+      orderBy: { name: 'asc' }, // также: city_name → name
     });
     return NextResponse.json(zones);
   } catch (error) {
     console.error('Ошибка получения зон доставки:', error);
-    return NextResponse.json({ error: 'Не удалось загрузить города' }, { status: 500 });
+    return NextResponse.json({ error: 'Ошибка сервера' }, { status: 500 });
   }
 }

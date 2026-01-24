@@ -31,20 +31,23 @@ model Product {
   description String?
   price       Decimal
   stock       Int         @default(0)
-  imageUrl    String?
+  imageUrl    String[]
   categoryId  String?
   category    Category?   @relation(fields: [categoryId], references: [id])
   orders      OrderItem[]
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   brand       String?
-
+  attributes  Json?
+  @@index([brand])
+  @@index([price])
+  @@index([stock])
   @@index([categoryId])
 }
 
 model Order {
   id              String        @id @default(cuid())
-  userId          String
+  userId          String?
   customerName    String
   customerPhone   String
   customerEmail   String?
@@ -56,8 +59,10 @@ model Order {
   items           OrderItem[]
   deliveryZone    DeliveryZone? @relation(fields: [deliveryZoneId], references: [id])
   createdAt       DateTime      @default(now())
-  user            User          @relation(fields: [userId], references: [id])
+  user            User?         @relation(fields: [userId], references: [id])
 
+  @@index([status])
+  @@index([createdAt])
   @@index([deliveryZoneId])
 }
 

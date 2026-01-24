@@ -46,9 +46,8 @@ export default function DeliveryCitySelector({ value, onChange }: Props) {
             className="mt-1"
           />
           <label htmlFor={`city-${zone.id}`} className="flex-1 cursor-pointer space-y-1">
-            <div className="font-medium">{zone.city_name}</div>
+            <div className="font-medium">{zone.name}</div>
             <div className="text-sm text-gray-600">
-              Срок: {zone.delivery_days_min}–{zone.delivery_days_max} дн.
             </div>
           </label>
         </div>
