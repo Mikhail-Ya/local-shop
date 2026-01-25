@@ -1,5 +1,3 @@
-// src/components/ui/Navbar.tsx
-
 'use client';
 
 import Link from 'next/link';
@@ -33,15 +31,9 @@ const [user, setUser] = useState<{ email: string; role?: string } | null>(null);
     const handleLogout = async () => {
         await fetch('/api/auth/logout', { method: 'POST' });
         setUser(null);
-        window.location.href = '/'; // принудительный редирект
+        window.location.href = '/';
     };
- /* const pathname = usePathname();
-  // Показываем Navbar ТОЛЬКО на главной и в каталоге
-  const showNavbar = pathname === '/' || pathname === '/catalog';
-
-  if (!showNavbar) {
-    return null;
-  }*/
+ 
 
   return (
     <nav className={myStyle.headerBox}>
@@ -62,15 +54,17 @@ const [user, setUser] = useState<{ email: string; role?: string } | null>(null);
                 </div>
                 <div className={myStyle.userCabinet}>
                     {user != null ? (
-                        <Link href={"profile"} className={myStyle.cartlink}>
-                            <i className={"fas fa-circle-user"}></i>
-                            <Link href="/profile" className="block px-4 py-2 hover:bg-gray-100">Личный кабинет</Link>
-                            {user.role === 'admin' && (
-                            <Link href="/admin" className="block px-4 py-2 hover:bg-gray-100">Админка</Link>
+                        <div className={myStyle.cartlink}>
+                            {user.role !== 'admin'?( 
+                              <Link href="/profile" className={"block px-4 py-2 hover:bg-gray-100"}>
+                                <i className="fas fa-circle-user"></i>Личный кабинет
+                              </Link>
+                              ) : (
+                            <Link href="/admin" className={"block px-4 py-2 hover:bg-gray-100"}>Админка</Link>
                             )}
-                        </Link>
+                        </div>
                         ) : (
-                        <Link href="/login" className="hover:underline">Вход</Link>
+                            <Link href="/login" className={myStyle.cartlink}>Вход</Link>
                         )}
                         <Link href="/cart" className={myStyle.cartlink}>
                             <i className={"fas fa-shopping-cart"}></i>

@@ -1,45 +1,12 @@
 
 import WeeklyProducts from '@/components/ui/WeeklyProducts';
 import Link from 'next/link';
+import BannerBox from '@/components/ui/banners/BannerBox';
 
 export default function Home() {
   return (
-    <>
-    <section className="banners">
-        <div className="container">
-            <div className="banner-grid">
-                <div className="banner banner-large">
-                    <div className="banner-content">
-                        <h2>Распродажа бытовой техники</h2>
-                        <p>Скидки до 30% на технику для дома</p>
-                        <a href="/catalog" className="btn btn-white">Смотреть акции</a>
-                    </div>
-                    <div className="banner-icon">
-                        <i className="fas fa-tags"></i>
-                    </div>
-                </div>
-                <div className="banner banner-small">
-                    <div className="banner-content">
-                        <h3>Бесплатная доставка</h3>
-                        <p>При заказе от 5000 ₽</p>
-                    </div>
-                    <div className="banner-icon">
-                        <i className="fas fa-truck"></i>
-                    </div>
-                </div>
-                <div className="banner banner-small">
-                    <div className="banner-content">
-                        <h3>Рассрочка 0%</h3>
-                        <p>На 6 месяцев</p>
-                    </div>
-                    <div className="banner-icon">
-                        <i className="fas fa-credit-card"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
+    <> 
+    <BannerBox />
     <section className="categories">
         <div className="container">
             <h2 className="section-title"><i className="fas fa-th-large"></i> Популярные категории</h2>

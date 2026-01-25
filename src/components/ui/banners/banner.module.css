@@ -1,0 +1,80 @@
+.banners {
+    margin: 2rem 0;
+}
+
+.bannergrid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 4fr 1fr;
+    gap: 1rem;
+}
+
+.bannerbox {
+    padding: 1rem;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    
+}
+
+.banner {
+    margin: 0.5rem;
+    padding: 1rem;
+    border-radius: var(--radius-lg);
+    display: grid;
+    align-items: center;
+    justify-items: start;
+    background: linear-gradient(135deg,var(--ban-color1), var(--ban-color2));
+}
+
+.banner0 {
+    grid-row: span 2;
+    filter: hue-rotate(0deg);
+}
+
+.banner0 h2 {
+    font-size: 1.5rem;
+}
+
+.banner1 {
+    filter: hue-rotate(240deg);
+}
+
+.banner2 {
+    filter: hue-rotate(120deg);
+}
+
+.bannericon {
+    position: absolute;
+    bottom: -1rem;
+    right: -1rem;
+    font-size: 6rem;
+    opacity: 0.2;
+}
+
+.banner h2 {
+    margin-bottom: 0.5rem;
+}
+.btn {
+    border-radius: var(--radius-md);
+    padding: 0.5rem;
+    margin: 2% 0;
+    box-shadow: inset 0px 0px 10px 0px var(--primary-color);
+    font-weight: bold;
+    opacity: 0.9;
+    color: var(--primary-dark);
+    background-color: var(--bg-light);
+}
+
+.btn0 {
+    background-color: white;
+    color: var(--primary-color);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 1rem;
+    display: inline-block;
+    text-decoration: none;
+}
