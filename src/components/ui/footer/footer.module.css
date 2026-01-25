@@ -1,8 +1,9 @@
 .footer {
     background-color: var(--text-primary);
     color: white;
-    margin-top: 3rem;
-    padding: 3rem 0 1rem;
+    margin-top: 2rem;
+    padding: 1rem 0 1rem;
+    
 }
 
 .footer-main {

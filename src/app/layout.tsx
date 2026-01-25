@@ -3,9 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { CartProvider } from "@/context/CartContext";
 import Navbar from "@/components/ui/header/Navbar";
 import Footer from "@/components/ui/footer/Footer";
-import { headers } from 'next/headers';
 
-import { Inter } from "next/font/google";
 import "./globals.css";
 import Link from "next/link";
 
