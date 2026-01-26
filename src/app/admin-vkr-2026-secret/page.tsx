@@ -12,13 +12,13 @@ export default function AdminPage() {
       </div>
       {/* Здесь можно добавить ссылки на управление товарами, категориями и т.д. */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Link href="/admin/products" className="block p-4 bg-blue-50 rounded hover:bg-blue-100 text-center">
+        <Link href="/admin-vkr-2026-secret/products" className="block p-4 bg-blue-50 rounded hover:bg-blue-100 text-center">
           Управление товарами
         </Link>
-        <Link href="/admin/categories" className="block p-4 bg-green-50 rounded hover:bg-green-100 text-center">
+        <Link href="/admin-vkr-2026-secret/categories" className="block p-4 bg-green-50 rounded hover:bg-green-100 text-center">
           Управление категориями
         </Link>
-        <Link href="/admin/delivery-zones" className="block p-4 bg-purple-50 rounded hover:bg-purple-100 text-center">
+        <Link href="/admin-vkr-2026-secret/delivery-zones" className="block p-4 bg-purple-50 rounded hover:bg-purple-100 text-center">
           Зоны доставки
         </Link>
       </div>

@@ -8,7 +8,7 @@ export default function AdminProductsPage() {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Управление товарами</h1>
         <Link
-          href="/admin/products/new"
+          href="/admin-vkr-2026-secret/products/new"
           className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
         >
           + Добавить товар

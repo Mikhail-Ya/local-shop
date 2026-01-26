@@ -103,7 +103,7 @@ export default function ProductTable() {
               </td>
               <td className="border p-2">
                 <Link 
-                  href={`/admin/products/edit/${product.id}`} 
+                  href={`/admin-vkr-2026-secret/products/edit/${product.id}`} 
                   className="text-blue-600 hover:underline mr-3"
                 >
                   Редактировать

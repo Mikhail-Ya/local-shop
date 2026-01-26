@@ -8,7 +8,7 @@ export default function AdminCategoriesPage() {
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Управление категориями</h1>
         <Link
-          href="/admin/categories/new"
+          href="/admin-vkr-2026-secret/categories/new"
           className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
         >
           + Добавить категорию

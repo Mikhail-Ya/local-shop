@@ -60,7 +60,7 @@ const [user, setUser] = useState<{ email: string; role?: string } | null>(null);
                                 <i className="fas fa-circle-user"></i>Личный кабинет
                               </Link>
                               ) : (
-                            <Link href="/admin" className={"block px-4 py-2 hover:bg-gray-100"}>Админка</Link>
+                            <Link href="/admin-vkr-2026-secret" className={"block px-4 py-2 hover:bg-gray-100"}>Админка</Link>
                             )}
                         </div>
                         ) : (
