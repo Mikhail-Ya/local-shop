@@ -68,10 +68,7 @@ const [user, setUser] = useState<{ email: string; role?: string } | null>(null);
                         )}
                         <Link href="/cart" className={myStyle.cartlink}>
                             <i className={"fas fa-shopping-cart"}></i>
-                            <div>
-                                <span className={myStyle.carttext}>Корзина</span>
-                                <span className={myStyle.carttotal}>12 450 ₽</span>
-                            </div>
+                            <span className={myStyle.carttotal}>15 353 p.</span>
                             <span className={myStyle.cartcount}>3</span>
                         </Link>
                 </div>

@@ -2,6 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import my from './catalogFilters.module.css';
 
 interface Category {
   id: string;
@@ -59,12 +60,12 @@ export default function CatalogFilters({
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow">
-      <h2 className="text-xl font-bold mb-4">Фильтры</h2>
+    <div className={my.catalogFilters}>
+      <h3><i className='fas fa-filter'></i> Фильтры</h3>
 
       {/* Категории */}
-      <div className="mb-6">
-        <h3 className="font-semibold mb-2">Категория</h3>
+      <div className={my.filterGroup}>
+        <h4>Категория</h4>
         <div className="space-y-2">
           <button
             onClick={() => onCategoryChange(null)}
@@ -89,7 +90,7 @@ export default function CatalogFilters({
       </div>
 
       {/* Бренды */}
-      <div className="mb-6">
+      <div className={my.filterGroup}>
         <h3 className="font-semibold mb-2">Бренд</h3>
         <div className="space-y-2">
           <button

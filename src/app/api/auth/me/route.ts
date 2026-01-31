@@ -14,8 +14,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ user: null });
   }
 
-  // Для ВКР можно вернуть фиктивного пользователя
-  // В реальном проекте — искать по ID из сессии
   const adminUser = await prisma.user.findFirst({
     where: { role: 'admin' },
     select: { email: true, role: true },
