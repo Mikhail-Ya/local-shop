@@ -4,8 +4,10 @@ import { prisma } from '@/lib/prisma';
 import { verifyPassword } from '@/lib/auth';
 import { serialize } from 'cookie';
 
-const SESSION_COOKIE_NAME = 'admin_session';
-const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@example.com';
+// Cookie для администратора (используется в middleware)
+const ADMIN_SESSION_COOKIE_NAME = 'admin_session';
+// Cookie для обычных пользователей и админов (идентификатор пользователя)
+const USER_SESSION_COOKIE_NAME = 'user_session';
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,25 +18,41 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Email и пароль обязательны' }, { status: 400 });
     }
 
-    const user = await prisma.user.findUnique({ where: { email } });
+    const normalizedEmail = String(email).toLowerCase().trim();
 
-    if (!user || user.role !== 'admin' || !verifyPassword(password, user.password_hash)) {
+    const user = await prisma.user.findUnique({ where: { email: normalizedEmail } });
+
+    if (!user || !verifyPassword(password, user.password_hash)) {
       return NextResponse.json({ error: 'Неверные учётные данные' }, { status: 401 });
     }
 
-    // Создаём сессию (в реальном проекте — JWT или UUID в БД)
-    // Для ВКР — просто флаг в cookie
-    const sessionValue = 'authenticated';
-    const cookie = serialize(SESSION_COOKIE_NAME, sessionValue, {
+    const cookieOptions = {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       maxAge: 60 * 60 * 24 * 7, // 7 дней
       path: '/',
-      sameSite: 'lax',
+      sameSite: 'lax' as const,
+    };
+
+    // Сессия пользователя (для /profile, Navbar и т.п.) — сохраняем id пользователя
+    const userSessionCookie = serialize(USER_SESSION_COOKIE_NAME, user.id, cookieOptions);
+
+    const response = NextResponse.json({
+      success: true,
+      user: {
+        email: user.email,
+        role: user.role,
+      },
     });
 
-    const response = NextResponse.json({ success: true });
-    response.headers.set('Set-Cookie', cookie);
+    response.headers.append('Set-Cookie', userSessionCookie);
+
+    // Если это администратор — дополнительно ставим admin_session для middleware
+    if (user.role === 'admin') {
+      const adminSessionCookie = serialize(ADMIN_SESSION_COOKIE_NAME, 'authenticated', cookieOptions);
+      response.headers.append('Set-Cookie', adminSessionCookie);
+    }
+
     return response;
   } catch (error) {
     console.error('Ошибка входа:', error);

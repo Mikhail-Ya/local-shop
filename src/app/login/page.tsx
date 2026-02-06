@@ -3,6 +3,7 @@
 export const dynamic = 'force-dynamic';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import Link from 'next/link';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -65,6 +66,12 @@ export default function LoginPage() {
             Войти
           </button>
         </form>
+        <p className="mt-4 text-center text-sm">
+          Нет аккаунта?{' '}
+          <Link href="/register" className="text-blue-600 hover:underline">
+            Зарегистрироваться
+          </Link>
+        </p>
       </div>
     </div>
   );

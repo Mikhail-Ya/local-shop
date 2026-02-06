@@ -9,7 +9,7 @@ export default function BannerBox() {
         button:{active:true,name:"Смотреть акцию",href:"/catalog"},
         info:"Скидки до 30% на технику для дома",
         icon:"fas fa-tags"},
-        { header:"Бесплатная доставка",
+        { header:"Бесплатная доставка (Осташков, Селижарово, Пено)",
             button:{active:true,name:"Узнать условия",href:"/catalog"},
         info:"При заказе от 5000 ₽",
         icon:"fas fa-truck"},

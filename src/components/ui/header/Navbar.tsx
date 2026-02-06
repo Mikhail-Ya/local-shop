@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-const [user, setUser] = useState<{ email: string; role?: string } | null>(null);
+  const [user, setUser] = useState<{ email: string; role?: string; full_name?: string } | null>(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -28,11 +28,16 @@ const [user, setUser] = useState<{ email: string; role?: string } | null>(null);
     checkAuth();
   }, [pathname]);
 
-    const handleLogout = async () => {
-        await fetch('/api/auth/logout', { method: 'POST' });
-        setUser(null);
-        window.location.href = '/';
-    };
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' });
+    } catch {
+      // игнорируем сетевые ошибки при выходе
+    } finally {
+      setUser(null);
+      window.location.href = '/';
+    }
+  };
  
 
   return (
@@ -54,18 +59,41 @@ const [user, setUser] = useState<{ email: string; role?: string } | null>(null);
                 </div>
                 <div className={myStyle.userCabinet}>
                     {user != null ? (
-                        <div className={myStyle.cartlink}>
-                            {user.role !== 'admin'?( 
-                              <Link href="/profile" className={"block px-4 py-2 hover:bg-gray-100"}>
-                                <i className="fas fa-circle-user"></i>Личный кабинет
-                              </Link>
-                              ) : (
-                            <Link href="/admin-vkr-2026-secret" className={"block px-4 py-2 hover:bg-gray-100"}>Админка</Link>
-                            )}
-                        </div>
+                      <div className={myStyle.cartlink}>
+                        {user.role !== 'admin' ? (
+                          <>
+                            <Link href="/profile" className={"block px-4 py-2 hover:bg-gray-100"}>
+                              <i className="fas fa-circle-user"></i> Личный кабинет
+                            </Link>
+                            <button
+                              type="button"
+                              onClick={handleLogout}
+                              className={"block px-4 py-2 hover:bg-gray-100"}
+                            >
+                              Выйти
+                            </button>
+                          </>
                         ) : (
-                            <Link href="/login" className={myStyle.cartlink}>Вход</Link>
+                          <>
+                            <Link href="/admin-vkr-2026-secret" className={"block px-4 py-2 hover:bg-gray-100"}>
+                              Админка
+                            </Link>
+                            <button
+                              type="button"
+                              onClick={handleLogout}
+                              className={"block px-4 py-2 hover:bg-gray-100"}
+                            >
+                              Выйти
+                            </button>
+                          </>
                         )}
+                      </div>
+                    ) : (
+                      <>
+                        <Link href="/login" className={myStyle.cartlink}>Вход</Link>
+                        <Link href="/register" className={myStyle.cartlink}>Регистрация</Link>
+                      </>
+                    )}
                         <Link href="/cart" className={myStyle.cartlink}>
                             <i className={"fas fa-shopping-cart"}></i>
                             <span className={myStyle.carttotal}>15 353 p.</span>
