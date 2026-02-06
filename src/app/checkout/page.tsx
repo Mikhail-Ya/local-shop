@@ -55,7 +55,9 @@ export default function CheckoutPage() {
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-6">Оформление заказа</h1>
+      <h1 className="section-title mb-6">
+        <i className="fas fa-receipt"></i> Оформление заказа
+      </h1>
 
       {/* Прогресс */}
       <div className="flex mb-8">

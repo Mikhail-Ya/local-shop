@@ -69,7 +69,11 @@ export default function ProductPage({ params }: { params: { id: string } }) {
         <span>{product.name}</span>
       </nav>
 
-      <div className="flex flex-col md:flex-row gap-8">
+      <h1 className="section-title mb-4">
+        <i className="fas fa-box-open"></i> {product.name}
+      </h1>
+
+      <div className="flex flex-col md:flex-row gap-8 mt-4">
         {/* Изображение */}
         <div className="md:w-1/2">
           <div className="w-full h-96 relative bg-gray-100 rounded-lg overflow-hidden">
@@ -90,8 +94,6 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
         {/* Информация */}
         <div className="md:w-1/2">
-          <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
-          
           <div className="mb-4">
             <span className="text-green-600 font-bold text-2xl">{product.price} ₽</span>
             {product.stock > 0 ? (

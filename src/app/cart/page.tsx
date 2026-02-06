@@ -10,7 +10,7 @@ export default function CartPage() {
   if (items.length === 0) {
     return (
       <div className="container mx-auto py-8 text-center">
-        <h1 className="text-2xl font-bold">Ваша корзина пуста</h1>
+        <h1 className="section-title">Ваша корзина пуста</h1>
         <Link href="/" className="text-blue-600 hover:underline mt-4 inline-block">
           Вернуться в каталог
         </Link>
@@ -20,7 +20,9 @@ export default function CartPage() {
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-6">Корзина</h1>
+      <h1 className="section-title mb-6">
+        <i className="fas fa-shopping-cart"></i> Корзина
+      </h1>
       <div className="space-y-6">
         {items.map(item => (
           <div key={item.id} className="flex items-center border p-4 rounded-lg">

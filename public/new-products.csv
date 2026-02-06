@@ -1,3 +1,32 @@
 name,description,price,stock,brand,imageUrl
-Палатка Hiker,Для треккинга,7490,5,Tramp,https://example.com/hiker.jpg
-Спальник Tramp,Тёплый спальник,4900,3,Tramp,https://example.com/sleeping-bag.jpg
+Палатка Hiker,Легкая палатка для треккинга,7490,5,Tramp,https://example.com/hiker.jpg
+Спальник Tramp,Теплый спальник для походов,4900,3,Tramp,https://example.com/sleeping-bag.jpg
+Холодильник Atlant 300,Двухкамерный холодильник 300 литров,28990,4,Atlant,https://example.com/fridge-atlant-300.jpg
+Холодильник LG NoFrost,Холодильник с системой NoFrost,39990,6,LG,https://example.com/fridge-lg-nofrost.jpg
+Стиральная машина LG 6кг,Стиральная машина на 6 килограммов,29990,8,LG,https://example.com/washer-lg-6kg.jpg
+Стиральная машина Samsung Eco,Стиральная машина с энергосбережением,31990,5,Samsung,https://example.com/washer-samsung-eco.jpg
+Пылесос Philips Compact,Компактный пылесос для квартиры,9990,10,Philips,https://example.com/vacuum-philips-compact.jpg
+Пылесос Thomas Aqua,Пылесос с аквафильтром,15990,3,Thomas,https://example.com/vacuum-thomas-aqua.jpg
+Робот пылесос Xiaomi G1,Робот пылесос для сухой уборки,18990,7,Xiaomi,https://example.com/robot-xiaomi-g1.jpg
+Робот пылесос Roborock S7,Робот пылесос с функцией мойки пола,39990,2,Roborock,https://example.com/robot-roborock-s7.jpg
+Микроволновка Samsung 20л,Микроволновая печь на двадцать литров,7990,9,Samsung,https://example.com/microwave-samsung-20l.jpg
+Микроволновка LG Grill,Микроволновая печь с грилем,9990,6,LG,https://example.com/microwave-lg-grill.jpg
+Духовой шкаф Bosch,Встраиваемый электрический духовой шкаф,34990,4,Bosch,https://example.com/oven-bosch.jpg
+Плита Hansa газовая,Газовая плита с четырьмя конфорками,25990,3,Hansa,https://example.com/cooker-hansa-gas.jpg
+Посудомоечная машина Bosch 45,Узкая посудомоечная машина,32990,5,Bosch,https://example.com/dishwasher-bosch-45.jpg
+Посудамощная машина Indesit,Посудомоечная машина полноразмерная,29990,4,Indesit,https://example.com/dishwasher-indesit.jpg
+Телевизор LG 43,Телевизор сорок три дюйма,27990,7,LG,https://example.com/tv-lg-43.jpg
+Телевизор Samsung 55,Телевизор пятьдесят пять дюймов,45990,5,Samsung,https://example.com/tv-samsung-55.jpg
+Колонка JBL Charge 5,Портативная колонка с аккумулятором,14990,12,JBL,https://example.com/speaker-jbl-charge5.jpg
+Колонка Sony SRS,Беспроводная акустическая система,12990,6,Sony,https://example.com/speaker-sony-srs.jpg
+Ноутбук Lenovo 15,Ноутбук пятнадцать дюймов для работы,49990,4,Lenovo,https://example.com/laptop-lenovo-15.jpg
+Ноутбук Asus Gaming,Игровой ноутбук среднего уровня,79990,3,Asus,https://example.com/laptop-asus-gaming.jpg
+Монитор AOC 24,Монитор двадцать четыре дюйма,12990,8,AOC,https://example.com/monitor-aoc-24.jpg
+Монитор Samsung 27,Изогнутый монитор двадцать семь дюймов,19990,5,Samsung,https://example.com/monitor-samsung-27.jpg
+Кондиционер Ballu 9,Настенный кондиционер для комнаты,25990,4,Ballu,https://example.com/ac-ballu-9.jpg
+Обогреватель Electrolux,Масляный обогреватель для дома,7990,9,Electrolux,https://example.com/heater-electrolux.jpg
+Увлажнитель воздуха Xiaomi,Ультразвуковой увлажнитель воздуха,4990,10,Xiaomi,https://example.com/humidifier-xiaomi.jpg
+Чайник Philips,Электрический чайник полтора литра,3990,15,Philips,https://example.com/kettle-philips.jpg
+Кофемашина DeLonghi,Кофемашина для эспрессо,25990,4,DeLonghi,https://example.com/coffee-delonghi.jpg
+Блендер Bosch,Погружной блендер для кухни,3990,14,Bosch,https://example.com/blender-bosch.jpg
+Мультиварка Redmond,Мультиварка с программами приготовления,6990,7,Redmond,https://example.com/multicooker-redmond.jpg
