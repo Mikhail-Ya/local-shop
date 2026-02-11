@@ -8,12 +8,20 @@ import { useCart } from '@/context/CartContext';
 export default function CheckoutPage() {
   const { items, totalPrice, clearCart } = useCart();
   const [currentStep, setCurrentStep] = useState<'step1' | 'step2'>('step1');
-  const [orderData, setOrderData] = useState({
+  const [orderData, setOrderData] = useState<{
+    customerName: string;
+    phone: string;
+    email: string;
+    deliveryCity: string;
+    deliveryAddress: string;
+    isPickup?: boolean;
+  }>({
     customerName: '',
     phone: '',
     email: '',
     deliveryCity: '',
     deliveryAddress: '',
+    isPickup: false,
   });
 
   const goToStep2 = (data: any) => {
@@ -25,6 +33,7 @@ export default function CheckoutPage() {
     ...orderData,
     items: items,
     totalAmount: totalPrice,
+    isPickup: orderData.isPickup || false,
   });
 
   const submitOrder = async () => {
@@ -38,6 +47,7 @@ export default function CheckoutPage() {
           email: orderData.email,
           deliveryCity: orderData.deliveryCity,
           deliveryAddress: orderData.deliveryAddress,
+          isPickup: orderData.isPickup,
           items: items.map(item => ({
             productId: item.id,
             quantity: Number(item.quantity),

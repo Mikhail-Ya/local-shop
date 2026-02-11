@@ -36,13 +36,27 @@ export default function CheckoutStep2({ orderData, onBack, onSubmit }: CheckoutS
       <div className="mb-6">
         <h3 className="font-semibold mb-2">Доставка</h3>
         <div className="border rounded p-4">
-          <div className="mb-2">
-            <span className="font-medium">Город:</span> {orderData.deliveryCity}
-          </div>
-          {orderData.deliveryAddress && (
-            <div>
-              <span className="font-medium">Адрес:</span> {orderData.deliveryAddress}
+
+          {orderData.isPickup ? (
+            <div className="text-green-600 font-medium">
+              <i className="fas fa-hand-paper mr-2"></i>Самовывоз
+              <div className="mb-2">
+                <span className="font-medium">Город:</span> {orderData.deliveryCity}
+              </div>
             </div>
+          ) : (
+            <>
+              {orderData.deliveryCity && (
+                <div>
+                  <span className="font-medium">Город:</span> {orderData.deliveryCity}
+                </div>
+              )}
+              {orderData.deliveryAddress && (
+                <div>
+                  <span className="font-medium">Адрес:</span> {orderData.deliveryAddress}
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>

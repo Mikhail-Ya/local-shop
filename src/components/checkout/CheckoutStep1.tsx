@@ -2,7 +2,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import DeliveryCitySelector from '@/components/checkout/DeliveryCitySelector';
 
 interface Props {
@@ -16,13 +16,43 @@ export default function CheckoutStep1({ onContinue }: Props) {
     email: '',
     deliveryCity: '',
     deliveryAddress: '',
+    isPickup: false,
   });
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [loadingUserData, setLoadingUserData] = useState(false);
+
+  // Загрузка данных пользователя при монтировании
+  useEffect(() => {
+    const fetchUserData = async () => {
+      setLoadingUserData(true);
+      try {
+        const res = await fetch('/api/auth/me');
+        const data = await res.json();
+
+        if (data.user) {
+          setFormData(prev => ({
+            ...prev,
+            customerName: data.user.full_name || prev.customerName,
+            phone: data.user.phone || prev.phone,
+            email: data.user.email || prev.email,
+          }));
+        }
+      } catch (error) {
+        console.error('Ошибка загрузки данных пользователя:', error);
+      } finally {
+        setLoadingUserData(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    const target = e.target as HTMLInputElement;
+    const { name, value, type, checked } = target;
+    const newValue = type === 'checkbox' ? checked : value;
+    setFormData(prev => ({ ...prev, [name]: newValue }));
     if (errors[name]) {
       setErrors(prev => {
         const newErrors = { ...prev };
@@ -32,8 +62,8 @@ export default function CheckoutStep1({ onContinue }: Props) {
     }
   };
 
-  const handleDeliveryCityChange = (cityId: string, cityData: any) => {
-    setFormData(prev => ({ ...prev, deliveryCity: cityId }));
+  const handleDeliveryCityChange = (cityName: string, cityData: any) => {
+    setFormData(prev => ({ ...prev, deliveryCity: cityName }));
   };
 
   const validateForm = () => {
@@ -45,7 +75,7 @@ export default function CheckoutStep1({ onContinue }: Props) {
 
     if (!formData.phone.trim()) {
       newErrors.phone = 'Телефон обязателен';
-    } else if (!/^\+7\(\d{3}\)\s*\d{3}-\d{2}-\d{2}$/.test(formData.phone)) {
+    } else if (!/^\+?[7-8]-\d{3}-\d{3}-\d{2}-\d{2}$/.test(formData.phone)) {
       newErrors.phone = 'Неверный формат телефона';
     }
 
@@ -55,7 +85,8 @@ export default function CheckoutStep1({ onContinue }: Props) {
       newErrors.email = 'Неверный формат email';
     }
 
-    if (!formData.deliveryCity) {
+    // Город обязателен только если не самовывоз
+    if (!formData.isPickup && !formData.deliveryCity) {
       newErrors.deliveryCity = 'Необходимо выбрать город доставки';
     }
 
@@ -71,8 +102,9 @@ export default function CheckoutStep1({ onContinue }: Props) {
         customerName: formData.customerName,
         phone: formData.phone,
         email: formData.email,
-        deliveryCity: formData.deliveryCity,
-        deliveryAddress: formData.deliveryAddress,
+        deliveryCity:  formData.deliveryCity,
+        deliveryAddress: formData.isPickup ? '' : formData.deliveryAddress,
+        isPickup: formData.isPickup,
       });
     }
   };
@@ -100,7 +132,7 @@ export default function CheckoutStep1({ onContinue }: Props) {
           name="phone"
           value={formData.phone}
           onChange={handleChange}
-          placeholder="+7 (XXX) XXX-XX-XX"
+          placeholder="+7-XXX-XXX-XX-XX или 8-XXX-XXX-XX-XX"
           className={`w-full p-2 border rounded ${errors.phone ? 'border-red-500' : ''}`}
         />
         {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
@@ -118,25 +150,42 @@ export default function CheckoutStep1({ onContinue }: Props) {
         {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
       </div>
 
+      
+          <div className="mb-4">
+            <label className="block mb-1">Выберите город доставки *</label>
+            <DeliveryCitySelector
+              value={formData.deliveryCity}
+              onChange={handleDeliveryCityChange}
+            />
+            {errors.deliveryCity && <p className="text-red-500 text-sm mt-1">{errors.deliveryCity}</p>}
+          </div>
       <div className="mb-4">
-        <label className="block mb-1">Выберите город доставки *</label>
-        <DeliveryCitySelector
-          value={formData.deliveryCity}
-          onChange={handleDeliveryCityChange}
-        />
-        {errors.deliveryCity && <p className="text-red-500 text-sm mt-1">{errors.deliveryCity}</p>}
+        <label className="flex items-center space-x-2 cursor-pointer">
+          <input
+            type="checkbox"
+            name="isPickup"
+            checked={formData.isPickup}
+            onChange={handleChange}
+            className="w-5 h-5"
+          />
+          <span className="font-medium">Самовывоз (заберу сам)</span>
+        </label>
       </div>
 
-      <div className="mb-6">
-        <label className="block mb-1">Адрес (улица, дом, квартира) или комментарий для курьера</label>
-        <textarea
-          name="deliveryAddress"
-          value={formData.deliveryAddress}
-          onChange={handleChange}
-          rows={3}
-          className="w-full p-2 border rounded"
-        ></textarea>
-      </div>
+      {!formData.isPickup && (
+        <>
+          <div className="mb-6">
+            <label className="block mb-1">Адрес (улица, дом, квартира) или комментарий для курьера</label>
+            <textarea
+              name="deliveryAddress"
+              value={formData.deliveryAddress}
+              onChange={handleChange}
+              rows={3}
+              className="w-full p-2 border rounded"
+            ></textarea>
+          </div>
+        </>
+      )}
 
       <div className="flex justify-between">
         <button

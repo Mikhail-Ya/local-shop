@@ -22,6 +22,7 @@ export async function GET(request: NextRequest) {
       email: true,
       role: true,
       full_name: true,
+      phone: true,
     },
   });
 

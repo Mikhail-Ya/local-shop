@@ -2,17 +2,36 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
+import { parse } from 'cookie';
 
-export async function GET() {
+const USER_SESSION_COOKIE_NAME = 'user_session';
+
+export async function GET(request: NextRequest) {
+  const cookieHeader = request.headers.get('cookie');
+  const cookies = cookieHeader ? parse(cookieHeader) : {};
+  const userId = cookies[USER_SESSION_COOKIE_NAME];
+
   try {
-    const orders = await prisma.order.findMany({
-      include: {
-        deliveryZone: true,
-      },
-      orderBy: { createdAt: 'desc' },
-    });
+    // Если пользователь авторизован, возвращаем только его заказы
+    if (userId) {
+      const orders = await prisma.order.findMany({
+        where: { userId },
+        include: {
+          deliveryZone: true,
+          items: {
+            include: {
+              product: true,
+            },
+          },
+        },
+        orderBy: { createdAt: 'desc' },
+      });
 
-    return NextResponse.json(orders);
+      return NextResponse.json(orders);
+    }
+
+    // Если не авторизован, возвращаем ошибку
+    return NextResponse.json({ error: 'Не авторизован' }, { status: 401 });
   } catch (error) {
     console.error('Ошибка получения заказов:', error);
     return NextResponse.json({ error: 'Не удалось загрузить заказы' }, { status: 500 });
@@ -89,6 +108,7 @@ const orderSchema = z.object({
   email: z.string().email().optional().or(z.literal('')),
   deliveryCity: z.string().optional(),
   deliveryAddress: z.string().optional(),
+  isPickup: z.boolean().optional(),
   items: z.array(
     z.object({
       productId: z.string(),
@@ -103,6 +123,11 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const validatedData = orderSchema.parse(body);
+
+    // Получаем userId из куки, если пользователь авторизован
+    const cookieHeader = request.headers.get('cookie');
+    const cookies = cookieHeader ? parse(cookieHeader) : {};
+    const userId = cookies[USER_SESSION_COOKIE_NAME];
 
     // Проверка товара на наличие и расчет остатков 
     const productIds = validatedData.items.map(item => item.productId);
@@ -127,15 +152,41 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Найти зону доставки по названию города, если указан и не самовывоз
+    let deliveryZoneId: string | null = null;
+    const isPickup = validatedData.isPickup || false;
+
+    if ( validatedData.deliveryCity) {
+      // Ищем зону доставки по названию
+      const deliveryZone = await prisma.deliveryZone.findFirst({
+        where: {
+          name: validatedData.deliveryCity,
+          isActive: true,
+        },
+      });
+
+      if (!deliveryZone) {
+        return NextResponse.json(
+          { error: `Доставка в город "${validatedData.deliveryCity}" недоступна` },
+          { status: 400 }
+        );
+      }
+
+      deliveryZoneId = deliveryZone.id;
+    }
+
     // Атомарная транзакция: создание заказа и обновление остатков
     const order = await prisma.$transaction(async (tx) => {
       // Создание заказа
       const newOrder = await tx.order.create({
         data: {
+          userId: userId || null, // Привязываем к пользователю, если авторизован
           customerName: validatedData.customerName,
           customerPhone: validatedData.phone,
           customerEmail: validatedData.email || null,
+          deliveryZoneId: deliveryZoneId,
           deliveryAddress: validatedData.deliveryAddress || null,
+          pickupPoint: isPickup,
           totalAmount: validatedData.totalAmount,
           status: 'PENDING',
           items: {
@@ -167,7 +218,7 @@ export async function POST(request: NextRequest) {
     console.error('Order creation error:', error);
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Ошибка валидации', details: error },
+        { error: 'Ошибка валидации', details: error.issues },
         { status: 400 }
       );
     }

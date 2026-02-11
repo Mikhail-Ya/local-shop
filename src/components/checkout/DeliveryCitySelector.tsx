@@ -3,11 +3,10 @@
 
 import { useEffect, useState } from 'react';
 import { DeliveryZone } from '@prisma/client';
-import Link from 'next/link';
 
 interface Props {
   value: string;
-  onChange: (zoneId: string, zoneData: DeliveryZone) => void;
+  onChange: (zoneName: string, zoneData: DeliveryZone) => void;
 }
 
 export default function DeliveryCitySelector({ value, onChange }: Props) {
@@ -15,7 +14,7 @@ export default function DeliveryCitySelector({ value, onChange }: Props) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Загружаем данные через API (см. ниже)
+    // Загружаем данные через API
     fetch('/api/delivery-zones')
       .then(res => res.json())
       .then(data => {
@@ -40,14 +39,17 @@ export default function DeliveryCitySelector({ value, onChange }: Props) {
             type="radio"
             id={`city-${zone.id}`}
             name="deliveryCity"
-            value={zone.id}
-            checked={value === zone.id}
-            onChange={() => onChange(zone.id, zone)}
+            value={zone.name}
+            checked={value === zone.name}
+            onChange={() => onChange(zone.name, zone)}
             className="mt-1"
           />
           <label htmlFor={`city-${zone.id}`} className="flex-1 cursor-pointer space-y-1">
             <div className="font-medium">{zone.name}</div>
             <div className="text-sm text-gray-600">
+              {zone.deliveryFee && Number(zone.deliveryFee) > 0
+                ? `Доставка: ${Number(zone.deliveryFee)} ₽`
+                : 'Бесплатная доставка'}
             </div>
           </label>
         </div>

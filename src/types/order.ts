@@ -14,6 +14,7 @@ export interface OrderData {
   email: string;
   deliveryCity: string;
   deliveryAddress: string;
+  isPickup?: boolean;
   items: CartItem[];
   totalAmount: number;
 }

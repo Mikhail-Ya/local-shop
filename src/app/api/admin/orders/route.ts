@@ -25,6 +25,8 @@ export async function GET() {
       deliveryZone: order.deliveryZone
         ? { name: order.deliveryZone.name }
         : null,
+      deliveryAddress: order.deliveryAddress,
+      pickupPoint: order.pickupPoint,
       totalAmount: Number(order.totalAmount),
       status: order.status,
       createdAt: order.createdAt.toISOString(),
