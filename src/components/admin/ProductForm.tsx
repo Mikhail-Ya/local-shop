@@ -41,10 +41,48 @@ export default function ProductForm({ product, categories }: ProductFormProps) {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Отправка данных:', formData);
-    // Здесь будет fetch к /api/products или /api/products/[id]
+    
+    try {
+      const url = product 
+        ? `/api/admin/products/${product.id}`
+        : '/api/admin/products';
+      
+      const res = await fetch(url, {
+        method: product ? 'PUT' : 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      
+      if (!res.ok) {
+        throw new Error(`Ошибка: ${res.status}`);
+      }
+      
+      alert(product ? 'Товар обновлен!' : 'Товар создан!');
+      
+      // Очистить форму или перенаправить
+      if (product) {
+        setFormData({ ...formData, ...initialData });
+      } else {
+        // Для новой страницы сбросить форму
+        setFormData({
+          name: '',
+          description: null,
+          price: 0,
+          stock: 0,
+          imageUrl: [],
+          categoryId: null,
+          brand: null,
+          attributes: null,
+        });
+      }
+    } catch (error) {
+      console.error('Ошибка сохранения:', error);
+      alert('Ошибка при сохранении товара');
+    }
   };
 
   return (

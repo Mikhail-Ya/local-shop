@@ -19,11 +19,15 @@ export async function GET() {
     // Форматируем данные для таблицы
     const formattedOrders = orders.map(order => ({
       id: order.id,
-      date: order.createdAt.toLocaleDateString('ru-RU'),
-      client: order.customerName || order.user?.full_name || order.customerEmail || 'Гость',
-      city: order.deliveryZone?.name || '—',
-      amount: Number(order.totalAmount),
+      customerName: order.customerName,
+      customerPhone: order.customerPhone,
+      customerEmail: order.customerEmail,
+      deliveryZone: order.deliveryZone
+        ? { name: order.deliveryZone.name }
+        : null,
+      totalAmount: Number(order.totalAmount),
       status: order.status,
+      createdAt: order.createdAt.toISOString(),
     }));
 
     return NextResponse.json(formattedOrders);

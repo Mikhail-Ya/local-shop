@@ -22,7 +22,7 @@ export default function NewCategoryPage() {
 
       if (res.ok) {
         alert('Категория успешно создана!');
-        router.push('/admin/categories');
+        router.push('/admin-vkr-2026-secret/categories');
       } else {
         const error = await res.json();
         alert(error.error || 'Ошибка при создании категории');

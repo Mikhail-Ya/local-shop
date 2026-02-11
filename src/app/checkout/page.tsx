@@ -21,6 +21,12 @@ export default function CheckoutPage() {
     setCurrentStep('step2');
   };
 
+  const getOrderDataForStep2 = () => ({
+    ...orderData,
+    items: items,
+    totalAmount: totalPrice,
+  });
+
   const submitOrder = async () => {
     try {
       const response = await fetch('/api/orders', {
@@ -34,10 +40,10 @@ export default function CheckoutPage() {
           deliveryAddress: orderData.deliveryAddress,
           items: items.map(item => ({
             productId: item.id,
-            quantity: item.quantity,
-            unitPrice: item.price,
+            quantity: Number(item.quantity),
+            unitPrice: Number(item.price),
           })),
-          totalAmount: totalPrice,
+          totalAmount: Number(totalPrice),
         }),
       });
 
@@ -45,7 +51,9 @@ export default function CheckoutPage() {
         clearCart();
         window.location.href = '/order-success'; // или router.push
       } else {
-        alert('Ошибка при создании заказа');
+        const errorData = await response.json();
+        console.error('Order error:', errorData);
+        alert('Ошибка при создании заказа: ' + (errorData.error || 'Неизвестная ошибка'));
       }
     } catch (err) {
       console.error(err);
@@ -75,7 +83,7 @@ export default function CheckoutPage() {
       {currentStep === 'step1' && <CheckoutStep1 onContinue={goToStep2} />}
       {currentStep === 'step2' && (
         <CheckoutStep2
-          orderData={{ ...orderData, items, totalAmount: totalPrice }}
+          orderData={getOrderDataForStep2()}
           onBack={() => setCurrentStep('step1')}
           onSubmit={submitOrder}
         />

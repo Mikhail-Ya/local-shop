@@ -25,7 +25,7 @@ export async function GET() {
 
 const brands = brandResults
   .map(item => item.brand)
-  .filter((brand): brand is string => typeof brand === 'string')||[];
+  .filter((brand): brand is string => typeof brand === 'string') || [];
 
     return NextResponse.json({ categories, brands });
   } catch (error) {

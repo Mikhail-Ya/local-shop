@@ -2,13 +2,15 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import myStyle from './header.module.css'
+import myStyle from './header.module.css';
 import { usePathname } from 'next/navigation';
+import { useCart } from '@/context/CartContext';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [user, setUser] = useState<{ email: string; role?: string; full_name?: string } | null>(null);
   const pathname = usePathname();
+  const { totalItems, totalPrice } = useCart();
 
   useEffect(() => {
     // Проверяем наличие cookies или делаем запрос к API
@@ -96,8 +98,8 @@ export default function Navbar() {
                     )}
                         <Link href="/cart" className={myStyle.cartlink}>
                             <i className={"fas fa-shopping-cart"}></i>
-                            <span className={myStyle.carttotal}>15 353 p.</span>
-                            <span className={myStyle.cartcount}>3</span>
+                            <span className={myStyle.carttotal}>{totalPrice.toLocaleString('ru-RU')} ₽</span>
+                            <span className={myStyle.cartcount}>{totalItems}</span>
                         </Link>
                 </div>
             </div>
@@ -111,27 +113,27 @@ export default function Navbar() {
                         <ul>
                             <li><Link href="/" className={myStyle.active}><i className={"fas fa-home"}></i> Главная</Link></li>
                             <li className={myStyle.dropdown}>
-                                <Link href="/"><i className={"fas fa-tv"}></i> Техника <i className={myStyle.fachevrondown}></i></Link>
+                                <Link href="/catalog"><i className={"fas fa-tv"}></i> Техника <i className={myStyle.fachevrondown}></i></Link>
                                 <div className={myStyle.dropdowncontent}>
-                                    <Link href="/"><i className={myStyle.h + " fas fa-blender"}></i> Кухонная техника</Link>
-                                    <Link href="/"><i className={myStyle.h +" fas fa-broom"}></i> Для уборки</Link>
-                                    <Link href="/"><i className={myStyle.h +" fas fa-fan"}></i> Климатическая</Link>
-                                    <Link href="/"><i className={myStyle.h +" fas fa-laptop"}></i> Компьютерная</Link>
-                                    <Link href="/"><i className={myStyle.h +" fas fa-volume-up"}></i> Аудиовидео</Link>
+                                    <Link href="/catalog"><i className={myStyle.h + " fas fa-blender"}></i> Кухонная техника</Link>
+                                    <Link href="/catalog"><i className={myStyle.h +" fas fa-broom"}></i> Для уборки</Link>
+                                    <Link href="/catalog"><i className={myStyle.h +" fas fa-fan"}></i> Климатическая</Link>
+                                    <Link href="/catalog"><i className={myStyle.h +" fas fa-laptop"}></i> Компьютерная</Link>
+                                    <Link href="/catalog"><i className={myStyle.h +" fas fa-volume-up"}></i> Аудиовидео</Link>
                                 </div>
                             </li>
                             <li className={myStyle.dropdown}>
-                                <Link href="/"><i className={"fas fa-home"}></i> Для дома <i className={myStyle.fachevrondown}></i></Link>
+                                <Link href="/catalog"><i className={"fas fa-home"}></i> Для дома <i className={myStyle.fachevrondown}></i></Link>
                                 <div className={myStyle.dropdowncontent}>
-                                    <Link href="/"><i className={myStyle.h +" fas fa-lightbulb"}></i> Освещение</Link>
-                                    <Link href="/"><i className={myStyle.h +" fas fa-bed"}></i> Текстиль</Link>
-                                    <Link href="/"><i className={myStyle.h +" fas fa-couch"}></i> Мебель</Link>
-                                    <Link href="/"><i className={myStyle.h +" fas fa-utensils"}></i> Посуда</Link>
+                                    <Link href="/catalog"><i className={myStyle.h +" fas fa-lightbulb"}></i> Освещение</Link>
+                                    <Link href="/catalog"><i className={myStyle.h +" fas fa-bed"}></i> Текстиль</Link>
+                                    <Link href="/catalog"><i className={myStyle.h +" fas fa-couch"}></i> Мебель</Link>
+                                    <Link href="/catalog"><i className={myStyle.h +" fas fa-utensils"}></i> Посуда</Link>
                                 </div>
                             </li>
-                            <li><Link href="/"><i className={"fas fa-percentage"}></i> Акции</Link></li>
-                            <li><Link href="/"><i className={"fas fa-star"}></i> Новинки</Link></li>
-                            <li><Link href="/"><i className={"fas fa-shipping-fast"}></i> Доставка</Link></li>
+                            <li><Link href="/catalog"><i className={"fas fa-percentage"}></i> Акции</Link></li>
+                            <li><Link href="/catalog"><i className={"fas fa-star"}></i> Новинки</Link></li>
+                            <li><Link href="/catalog"><i className={"fas fa-shipping-fast"}></i> Доставка</Link></li>
                         </ul>
                     </nav>
             </div>) : ( <div> </div> )
@@ -141,10 +143,10 @@ export default function Navbar() {
       {/* Мобильное меню */}
       {isMenuOpen && (
         <div className={myStyle.md}>
-          <Link href="/" className={myStyle.block}>Гл</Link>
-          <Link href="/categories" className={myStyle.block }>Кат</Link>
-          <Link href="/about" className={myStyle.block }>О нас</Link>
-          <Link href="/delivery" className={myStyle.block }>Дост</Link>
+          <Link href="/" className={myStyle.block}>Главная</Link>
+          <Link href="/catalog" className={myStyle.block }>Каталог</Link>
+          <Link href="/profile" className={myStyle.block }>Профиль</Link>
+          <Link href="/cart" className={myStyle.block }>Корзина</Link>
         </div>
       )}
     </nav>

@@ -10,7 +10,7 @@ interface Product {
   price: number;
   stock: number;
   brand: string | null;
-  imageUrl: string | null;
+  imageUrl: string[];
   category: { name: string } | null;
   createdAt: string;
 }
@@ -82,9 +82,9 @@ export default function ProductTable() {
             <tr key={product.id} className="hover:bg-gray-50">
               <td className="border p-2 text-xs">{product.id}</td>
               <td className="border p-2">
-                {product.imageUrl ? (
+                {product.imageUrl && product.imageUrl.length > 0 ? (
                   <img 
-                    src={product.imageUrl} 
+                    src={product.imageUrl[0]}
                     alt={product.name} 
                     className="w-10 h-10 object-cover rounded"
                   />
@@ -103,7 +103,7 @@ export default function ProductTable() {
               </td>
               <td className="border p-2">
                 <Link 
-                  href={`/admin-vkr-2026-secret/products/edit/${product.id}`} 
+                  href={`/admin-vkr-2026-secret/products/${product.id}/edit`} 
                   className="text-blue-600 hover:underline mr-3"
                 >
                   Редактировать

@@ -3,6 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { useCart } from '@/context/CartContext';
 
 interface Product {
   id: string;
@@ -10,7 +11,7 @@ interface Product {
   description: string | null;
   price: number; // Decimal из Prisma приходит как number в JS
   stock: number;
-  imageUrl: string | null;
+  imageUrl: string[];
   brand: string | null;
   category: {
     name: string;
@@ -25,6 +26,7 @@ interface Props {
 export default function ProductList({ categoryId, brand }: Props) {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const { addItem } = useCart();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -60,39 +62,56 @@ export default function ProductList({ categoryId, brand }: Props) {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {products.map(product => (
-        <div
-          key={product.id}
-          className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
-        >
-          <div className="w-full h-48 relative bg-gray-100">
-            {product.imageUrl ? (
-              <Image
-                src={product.imageUrl}
-                alt={product.name}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center text-gray-400">
-                Нет изображения
-              </div>
-            )}
-          </div>
-          <div className="p-4">
-            <h3 className="font-semibold line-clamp-1">{product.name}</h3>
-            <p className="text-green-600 font-bold">{product.price} ₽</p>
-            <div className="mt-2 text-sm text-gray-600 line-clamp-1">
-              {product.category?.name || 'Без категории'} |{' '}
-              {product.brand || 'Без бренда'}
+      {products.map(product => {
+        const image =
+          product.imageUrl && product.imageUrl.length > 0
+            ? product.imageUrl[0]
+            : null;
+
+        return (
+          <div
+            key={product.id}
+            className="border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+          >
+            <div className="w-full h-48 relative bg-gray-100">
+              {image ? (
+                <Image
+                  src={image}
+                  alt={product.name}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-400">
+                  Нет изображения
+                </div>
+              )}
             </div>
-            <button className="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full">
-              В корзину
-            </button>
+            <div className="p-4">
+              <h3 className="font-semibold line-clamp-1">{product.name}</h3>
+              <p className="text-green-600 font-bold">{product.price} ₽</p>
+              <div className="mt-2 text-sm text-gray-600 line-clamp-1">
+                {product.category?.name || 'Без категории'} |{' '}
+                {product.brand || 'Без бренда'}
+              </div>
+              <button
+                onClick={() =>
+                  addItem({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: image || undefined,
+                  })
+                }
+                className="mt-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full"
+              >
+                В корзину
+              </button>
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

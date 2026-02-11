@@ -8,6 +8,11 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
+    console.log('Получен ID товара:', id);
+
+    if (!id) {
+      return NextResponse.json({ error: 'ID товара не указан' }, { status: 400 });
+    }
 
     const product = await prisma.product.findUnique({
       where: { id },
@@ -15,6 +20,7 @@ export async function GET(
         category: true,
       },
     });
+    console.log('Найден товар:', product);
 
     if (!product) {
       return NextResponse.json({ error: 'Товар не найден' }, { status: 404 });

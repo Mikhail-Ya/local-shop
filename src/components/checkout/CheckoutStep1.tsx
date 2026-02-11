@@ -66,16 +66,13 @@ export default function CheckoutStep1({ onContinue }: Props) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      // Здесь можно добавить логику отправки данных на сервер
-      // Для демонстрации просто передаем данные дальше
+      // Передаем данные дальше (items и totalAmount будут добавлены в checkout/page.tsx)
       onContinue({
         customerName: formData.customerName,
         phone: formData.phone,
         email: formData.email,
         deliveryCity: formData.deliveryCity,
         deliveryAddress: formData.deliveryAddress,
-        items: [], // Заглушка
-        totalAmount: 0, // Заглушка
       });
     }
   };

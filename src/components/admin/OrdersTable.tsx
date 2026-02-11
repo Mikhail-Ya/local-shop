@@ -5,11 +5,15 @@ import { useEffect, useState } from 'react';
 
 interface Order {
   id: string;
-  date: string;
-  client: string;
-  city: string;
-  amount: number;
+  customerName: string;
+  customerPhone: string;
+  customerEmail: string | null;
+  deliveryZone: {
+    name: string;
+  } | null;
+  totalAmount: number;
   status: string;
+  createdAt: string;
 }
 
 const STATUS_LABELS: Record<string, string> = {
@@ -48,7 +52,9 @@ export default function OrdersTable() {
 
   const filteredOrders = orders.filter(order => {
     const matchesStatus = filters.status === 'all' || order.status === filters.status;
-    const matchesCity = filters.city === 'all' || order.city === filters.city;
+    const matchesCity =
+      filters.city === 'all' ||
+      (order.deliveryZone?.name === filters.city);
     return matchesStatus && matchesCity;
   });
 
@@ -104,17 +110,29 @@ export default function OrdersTable() {
               filteredOrders.map(order => (
                 <tr key={order.id} className="hover:bg-gray-50">
                   <td className="border p-2">{order.id}</td>
-                  <td className="border p-2">{order.date}</td>
-                  <td className="border p-2">{order.client}</td>
-                  <td className="border p-2">{order.city}</td>
-                  <td className="border p-2">{order.amount} ₽</td>
                   <td className="border p-2">
-                    <span className={`px-2 py-1 rounded text-xs ${
-                      order.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
-                      order.status === 'DELIVERED' ? 'bg-green-100 text-green-800' :
-                      order.status === 'CANCELLED' ? 'bg-red-100 text-red-800' :
-                      'bg-blue-100 text-blue-800'
-                    }`}>
+                    {new Date(order.createdAt).toLocaleDateString('ru-RU')}
+                  </td>
+                  <td className="border p-2">
+                    <div>{order.customerName}</div>
+                    <div className="text-xs text-gray-500">{order.customerPhone}</div>
+                  </td>
+                  <td className="border p-2">
+                    {order.deliveryZone?.name || 'Самовывоз'}
+                  </td>
+                  <td className="border p-2">{order.totalAmount} ₽</td>
+                  <td className="border p-2">
+                    <span
+                      className={`px-2 py-1 rounded text-xs ${
+                        order.status === 'PENDING'
+                          ? 'bg-yellow-100 text-yellow-800'
+                          : order.status === 'DELIVERED'
+                          ? 'bg-green-100 text-green-800'
+                          : order.status === 'CANCELLED'
+                          ? 'bg-red-100 text-red-800'
+                          : 'bg-blue-100 text-blue-800'
+                      }`}
+                    >
                       {STATUS_LABELS[order.status] || order.status}
                     </span>
                   </td>

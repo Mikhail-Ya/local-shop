@@ -3,7 +3,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import { useCart } from '@/context/CartContext';
 
 interface WeeklyProduct {
   id: string;
@@ -14,6 +14,7 @@ interface WeeklyProduct {
 
 export default function WeeklyProducts() {
   const [products, setProducts] = useState<WeeklyProduct[]>([]);
+  const { addItem } = useCart();
 
   useEffect(() => {
     const fetchWeekly = async () => {
@@ -63,12 +64,10 @@ export default function WeeklyProducts() {
               >
                 <div className="w-full h-48 relative bg-gray-100">
                   {image ? (
-                    <Image
+                    <img
                       src={image}
                       alt={product.name}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                      className="w-full h-full object-cover"
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center text-gray-400">
@@ -81,12 +80,27 @@ export default function WeeklyProducts() {
                   <p className="text-lg font-bold text-green-600 mt-2">
                     {product.price} ₽
                   </p>
-                  <Link
-                    href={`/product/${product.id}`}
-                    className="mt-3 inline-block text-blue-600 hover:underline text-sm"
-                  >
-                    Подробнее
-                  </Link>
+                  <div className="mt-3 flex gap-2">
+                    <Link
+                      href={`/product/${product.id}`}
+                      className="flex-1 text-center text-blue-600 hover:underline text-sm border border-blue-600 rounded px-3 py-2"
+                    >
+                      Подробнее
+                    </Link>
+                    <button
+                      onClick={() =>
+                        addItem({
+                          id: product.id,
+                          name: product.name,
+                          price: product.price,
+                          image: image || undefined,
+                        })
+                      }
+                      className="flex-1 bg-blue-600 text-white rounded px-3 py-2 hover:bg-blue-700 text-sm"
+                    >
+                      В корзину
+                    </button>
+                  </div>
                 </div>
               </div>
             );

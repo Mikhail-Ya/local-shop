@@ -82,103 +82,98 @@ export async function POST(request: NextRequest) {
   }
 }*/
 
-// 1. Схема валидации входящих данных с помощью Zod
-/*const orderSchema = z.object({
+// Схема валидации входящих данных для создания заказа
+const orderSchema = z.object({
   customerName: z.string().min(2, 'Имя слишком короткое'),
-  customerPhone: z.string().min(5, 'Некорректный номер телефона'),
-  customerEmail: z.string().email().optional().or(z.literal('')),
-  deliveryZoneId: z.string().optional(),
-  pickupPoint: z.boolean(),
+  phone: z.string().min(5, 'Некорректный номер телефона'),
+  email: z.string().email().optional().or(z.literal('')),
+  deliveryCity: z.string().optional(),
   deliveryAddress: z.string().optional(),
-  items: z.array(z.object({
-    productId: z.string(),
-    quantity: z.number().int().positive(),
-  })),
-})
+  items: z.array(
+    z.object({
+      productId: z.string(),
+      quantity: z.coerce.number().int().positive(),
+      unitPrice: z.coerce.number(),
+    })
+  ),
+  totalAmount: z.coerce.number().positive(),
+});
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
-    const validatedData = orderSchema.parse(body)
+    const body = await request.json();
+    const validatedData = orderSchema.parse(body);
+
     // Проверка товара на наличие и расчет остатков 
-    const productIds = validatedData.items.map(item => item.productId)
+    const productIds = validatedData.items.map(item => item.productId);
     const products = await prisma.product.findMany({
       where: { id: { in: productIds } },
-    })
+    });
 
-    let totalAmount = 0
-    const itemsWithPrice = validatedData.items.map(item => {
-      const product = products.find(p => p.id === item.productId)
+    // Проверяем наличие товаров
+    for (const item of validatedData.items) {
+      const product = products.find(p => p.id === item.productId);
       if (!product) {
-        throw new Error(`Товар с ID ${item.productId} не найден`)
+        return NextResponse.json(
+          { error: `Товар с ID ${item.productId} не найден` },
+          { status: 400 }
+        );
       }
       if (product.stock < item.quantity) {
-        throw new Error(`Недостаточно товара "${product.name}" на складе`)
+        return NextResponse.json(
+          { error: `Недостаточно товара "${product.name}" на складе` },
+          { status: 400 }
+        );
       }
-      const itemTotal = product.price.times(item.quantity)
-      totalAmount += itemTotal.toNumber()
-      return { ...item, price: product.price }
-    })
-
-    // 2. Получение стоимости доставки (если не самовывоз)
-    let deliveryFee = 0
-    if (!validatedData.pickupPoint && validatedData.deliveryZoneId) {
-      const zone = await prisma.deliveryZone.findUnique({
-        where: { id: validatedData.deliveryZoneId },
-      })
-      deliveryFee = zone?.deliveryFee?.toNumber() || 0
-      totalAmount += deliveryFee
     }
 
-    // 3. Атомарная транзакция: создание заказа и обновление остатков
+    // Атомарная транзакция: создание заказа и обновление остатков
     const order = await prisma.$transaction(async (tx) => {
       // Создание заказа
       const newOrder = await tx.order.create({
         data: {
           customerName: validatedData.customerName,
-          customerPhone: validatedData.customerPhone,
-          customerEmail: validatedData.customerEmail || null,
-          deliveryZoneId: validatedData.deliveryZoneId || null,
-          pickupPoint: validatedData.pickupPoint,
+          customerPhone: validatedData.phone,
+          customerEmail: validatedData.email || null,
           deliveryAddress: validatedData.deliveryAddress || null,
-          totalAmount,
+          totalAmount: validatedData.totalAmount,
           status: 'PENDING',
           items: {
-            create: itemsWithPrice.map(item => ({
+            create: validatedData.items.map(item => ({
               productId: item.productId,
               quantity: item.quantity,
-              price: item.price,
+              price: item.unitPrice,
             })),
           },
         },
-      })
+      });
 
       // Обновление остатков для каждого товара
       for (const item of validatedData.items) {
         await tx.product.update({
           where: { id: item.productId },
           data: { stock: { decrement: item.quantity } },
-        })
+        });
       }
 
-      return newOrder
-    })
+      return newOrder;
+    });
 
     return NextResponse.json(
       { success: true, orderId: order.id },
       { status: 201 }
-    )
+    );
   } catch (error) {
-    console.error('Order creation error:', error)
+    console.error('Order creation error:', error);
     if (error instanceof z.ZodError) {
       return NextResponse.json(
-        { error: 'Ошибка валидации', details: error.errors },
+        { error: 'Ошибка валидации', details: error },
         { status: 400 }
-      )
+      );
     }
     return NextResponse.json(
       { error: error instanceof Error ? error.message : 'Ошибка создания заказа' },
       { status: 500 }
-    )
+    );
   }
-}*/
+}

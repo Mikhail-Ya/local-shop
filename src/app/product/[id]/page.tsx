@@ -12,7 +12,7 @@ interface Product {
   description: string | null;
   price: number;
   stock: number;
-  imageUrl: string | null;
+  imageUrl: string[];
   brand: string | null;
   category: {
     id: string;
@@ -20,16 +20,28 @@ interface Product {
   } | null;
 }
 
-export default function ProductPage({ params }: { params: { id: string } }) {
+export default function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const { addItem } = useCart();
+  const [productId, setProductId] = useState<string | null>(null);
 
   useEffect(() => {
+    const fetchParams = async () => {
+      const resolvedParams = await params;
+      setProductId(resolvedParams.id);
+    };
+
+    fetchParams();
+  }, [params]);
+
+  useEffect(() => {
+    if (!productId) return;
+
     const fetchProduct = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/products/${params.id}`);
+        const res = await fetch(`/api/products/${productId}`);
         if (!res.ok) throw new Error('Товар не найден');
         const data = await res.json();
         setProduct(data);
@@ -41,7 +53,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
     };
 
     fetchProduct();
-  }, [params.id]);
+  }, [productId]);
 
   const handleAddToCart = () => {
     if (product) {
@@ -49,7 +61,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
         id: product.id,
         name: product.name,
         price: product.price,
-        image: product.imageUrl || undefined,
+        image: product.imageUrl && product.imageUrl.length > 0 ? product.imageUrl[0] : undefined,
       });
     }
   };
@@ -77,9 +89,9 @@ export default function ProductPage({ params }: { params: { id: string } }) {
         {/* Изображение */}
         <div className="md:w-1/2">
           <div className="w-full h-96 relative bg-gray-100 rounded-lg overflow-hidden">
-            {product.imageUrl ? (
+            {product.imageUrl && product.imageUrl.length > 0 ? (
               <Image
-                src={product.imageUrl}
+                src={product.imageUrl[0]}
                 alt={product.name}
                 fill
                 className="object-contain"

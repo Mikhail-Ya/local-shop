@@ -68,7 +68,7 @@ export default function Home() {
         <div className="container">
             <div className="section-header">
                 <h2 className="section-title"><i className="fas fa-fire"></i> Хиты продаж</h2>
-                <a href="pages/catalog.html" className="view-all">Все товары <i className="fas fa-arrow-right"></i></a>
+                <Link href="/catalog" className="view-all">Все товары <i className="fas fa-arrow-right"></i></Link>
             </div>
             <div className="products-grid">
                <WeeklyProducts />

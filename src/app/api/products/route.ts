@@ -15,8 +15,19 @@ export async function GET(request: NextRequest) {
 
     if (categoryId) where.categoryId = categoryId;
     if (brand) where.brand = brand;
-    if (minPrice) where.price = { ...where.price, gte: parseFloat(minPrice) };
-    if (maxPrice) where.price = { ...where.price, lte: parseFloat(maxPrice) };
+
+    // Исправленная логика фильтрации цен
+    if (minPrice || maxPrice) {
+      where.price = {};
+      if (minPrice) {
+        const min = parseFloat(minPrice);
+        if (!isNaN(min)) where.price.gte = min;
+      }
+      if (maxPrice) {
+        const max = parseFloat(maxPrice);
+        if (!isNaN(max)) where.price.lte = max;
+      }
+    }
 
     const products = await prisma.product.findMany({
       where,
@@ -24,7 +35,7 @@ export async function GET(request: NextRequest) {
         category: true,
       },
       orderBy: {
-        createdAt: "desc", // ✅ Правильное имя поля
+        createdAt: 'desc',
       },
     });
 

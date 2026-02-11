@@ -31,7 +31,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const saved = localStorage.getItem('cart');
     if (saved) {
       try {
-        setItems(JSON.parse(saved));
+        const parsed = JSON.parse(saved);
+        // Убеждаемся, что price и quantity - это числа
+        const normalized = parsed.map((item: CartItem) => ({
+          ...item,
+          price: Number(item.price),
+          quantity: Number(item.quantity),
+        }));
+        setItems(normalized);
       } catch (e) {
         console.error('Failed to parse cart from localStorage');
       }
